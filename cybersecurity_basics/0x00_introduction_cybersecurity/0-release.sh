@@ -1,2 +1,2 @@
 #!/bin/bash
-uname -o
+echo `lsb_release -a` | cut -d ' ' -f 3
