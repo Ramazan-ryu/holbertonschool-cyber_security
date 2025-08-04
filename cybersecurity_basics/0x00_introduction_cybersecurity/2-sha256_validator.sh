@@ -1,2 +1,2 @@
 #!/bin/bash
-echo '$2 $1 ' | shasum -a 256 && echo "OK" || echo "Error"
+echo '$2 $1 ' | sha256sum -c  && echo "OK" || echo "Error"
