@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo ss -tlpan
+sudo ss -alntx
