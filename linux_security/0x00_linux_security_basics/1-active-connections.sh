@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo netstat -tlpan
+sudo ss -tlpan
