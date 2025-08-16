@@ -1,9 +1,9 @@
 https://www.shodan.io/search?query=holbertonschool.com
 
-1.https://www.shodan.io/host/52.47.143.83
-2.https://www.shodan.io/host/52.47.143.83
-3.https://www.holbertonschool.com/
-4.https://www.shodan.io/host/35.180.27.154
+1. https://www.shodan.io/host/52.47.143.83
+2. https://www.shodan.io/host/52.47.143.83
+3. https://www.holbertonschool.com/
+4. https://www.shodan.io/host/35.180.27.154
 
 1. Overview
 This report provides detailed information on the holbertonschool.com domain, including:
@@ -11,6 +11,10 @@ This report provides detailed information on the holbertonschool.com domain, inc
 IP ranges within the domain.
 Technologies and frameworks used by subdomains.
 A summary of findings.
+
+
+
+
 2. IP Ranges
 The following IPs and their corresponding locations have been identified within the holbertonschool.com domain:
 
@@ -38,6 +42,10 @@ IP Address	Hostname	Provider	Location
 54.86.136.129	v1.holbertonschool.com	leakix	Unknown
 13.50.141.112	fr.holbertonschool.com	subdomaincenter	Unknown
 18.102.16.191	smile2021.holbertonschool.com	alienvault	Unknown
+
+
+
+
 3. Technologies and Frameworks
 The following subdomains and their respective technologies were identified:
 
@@ -50,11 +58,19 @@ staging-apply-forum.holbertonschool.com	13.38.122.220	Unknown	SubdomainCenter
 alpha.holbertonschool.com	54.157.56.129	Unknown	SubdomainCenter
 v2.holbertonschool.com	34.203.198.145	Unknown	Leakix
 blog.holbertonschool.com	192.0.78.230	Unknown	Leakix
+
+
+
+
 4. Observations
 The main domain and its subdomains are hosted on Amazon Data Services in France, with multiple subdomains using nginx servers.
 SSL certificates are provided by Let's Encrypt for some subdomains, supporting modern TLS versions (TLSv1.2 and TLSv1.3).
 Some subdomains redirect to the main domain (holbertonschool.com) or other internal resources.
 Various technologies and frameworks are in use across different subdomains, as observed from headers and SSL information.
+
+
+
+
 5. Tools and Commands Used
 The following tools and commands were used to gather this information:
 
