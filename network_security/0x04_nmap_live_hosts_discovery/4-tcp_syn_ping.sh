@@ -1,2 +1,2 @@
 #!/bin/bash
-nmap -sn -PS20,80,4430 "$1"
+sudo nmap -sn -PS20,80,4430 "$1"
