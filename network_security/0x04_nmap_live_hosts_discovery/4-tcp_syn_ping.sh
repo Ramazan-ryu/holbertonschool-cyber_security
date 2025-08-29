@@ -1,2 +1,2 @@
 #!/bin/bash
-nmap -PS 20,80,443 -sn $1
+nmap -sn -PS20,80,443 $1
