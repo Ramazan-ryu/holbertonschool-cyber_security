@@ -1,0 +1,124 @@
+Question #0
+What is the expansion of TCP?
+Transmission Control Protocol
+
+Question #1
+Which of the following layers in the TCP/IP protocol stack are considered end-to-end layers (also known as host to host layers)?
+TCP and UDP
+
+Question #2
+Which of the following options are characteristics of the TCP layer?
+Connection-Oriented
+Reliable
+Full Duplex
+
+Question #3
+Which fields in the TCP packet header identify the upper layer applications (processes)?
+Source and Destination Port Numbers
+
+Question #4
+Which of the following are not reliability mechanisms used by TCP?
+The source and destination port numbers
+
+Question #5
+Which protocols use UDP Port?
+DHCP
+TFTP
+
+Question #6
+The three-way handshake is used by which protocol(s)?
+TCP
+
+Question #7
+Which of the following statements are characteristics of the UDP layer?
+Connectionless
+Unreliable
+Low overhead
+
+Question #8
+A server port of UDP or TCP 53 is typically associated with what service?
+DNS
+
+Question #9
+How does a host that has sent TCP data know that the data was received?
+A TCP acknowledgement is sent from the receiver
+
+Question #10
+Which of the following best describes TCP versus UDP?
+TCP is slower, more reliable, and requires more overhead
+
+Question #11
+TCP typically begins a session with:
+The three-way handshake of client to server with SYN set, the server response of SYN/ACK, and the client acknowledgement of ACK
+
+Question #12
+What is the purpose of the IP checksum?
+To make sure that data in the IP header is not corrupted in transit
+
+Question #13
+What is a common use of DNS?
+Resolution of a host name to an IP address
+
+Question #14
+One function of the TCP sequence number is:
+To associate a chronological number with each TCP segment, allowing the receiver to properly reorder the individual segments of data
+
+Question #15
+The IP protocol field identifies:
+The embedded protocol of the packet
+
+Question #16
+What does the Address Resolution Protocol (ARP) do?
+Resolves a known IP address with a MAC address
+
+Question #17
+Which of the following best characterizes ICMP?
+It is used to communicate error conditions
+
+Question #18
+A TCP flag of RESET indicates:
+An intention to abort a TCP connection
+
+Question #19
+The Time to Live (TTL) field/value found in the IP header is used to:
+Expire IP packets in transit when the TTL value becomes 0
+
+Question #20
+What is a typical response from a host that receives a UDP packet on a non-listening port?
+An ICMP port unreachable message to the sender
+
+Question #21
+What is the function of a router?
+It attempts to move the IP packet one hop closer to the destination
+
+Question #22
+What is the difference between packets and frames in the Transport Layer of the TCP/IP model?
+Packets are logical units of data while frames are physical units of data.
+
+Question #23
+In which layer of the TCP/IP model are packets and frames used?
+Network Layer and Link Layer
+
+Question #24
+What information does a packet header contain?
+Source and destination IP addresses, protocol type, and checksum
+
+Question #25
+What is contained in a packet?
+A header and a payload
+
+Question #26
+What information does a frame header contain?
+Source and destination MAC addresses, frame type, and frame number
+
+Question #27
+What is contained in a frame?
+A header, a payload, and a trailer
+
+Question #28
+To which layer does the Transport Layer send segmented packets?
+Network Layer
+
+Question #29
+What techniques does the Transport Layer use to perform flow control, congestion control, and error recovery?
+Acknowledgments, retransmissions, and windowing
