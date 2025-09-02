@@ -48,50 +48,50 @@ wireshark
 Analyzing a Package with Wireshark:
 Let's consider an example of how Wireshark can be used to examine a network package:
 
- Start Wireshark:
+1.Start Wireshark:
 Launch the Wireshark application and select the network interface to capture packets from. This could be a wired or wireless network adapter.
 [PICTURE]
 https://imgur.com/2yYRbGi
 
-¢ Begin packet capture
+2.Begin packet capture
 Click on the "Start" or "Capture"  button to initiate the packet capture process. Wireshaill start capturing packets in real time from the selected network interface.
 [PICTURE]
 https://imgur.com/dqQEwWD
 
-¢ Filter the captured packets
+3.Filter the captured packets
 Apply filters to narrow down the captured packets based on specific criteria. For example, you can apply a filter to display only packets related to a particular protocol, IP address, or port number.
 
-¢ Inspect packet details
+4.Inspect packet details
 Select a packet of interest from the captured list, and Wireshark will display its detailed information. This includes the source and destination IP addresses, protocol headers, payload data, and other relevant packet attributes.
 [PICTURE]
 https://imgur.com/3pO7zJJ
 
- Analyze protocol behavior:
+5.Analyze protocol behavior:
 Wireshark allows you to drill down into each layer of the packet and examine protocol behavior. You can view protocol-specific details, such as HTTP requests and responses, DNS queries and responses, TCP connections, and more.
 
-¢ Detect anomalies:
+6.Detect anomalies:
 While analyzing packets, keep an eye out for any abnormal behavior or unexpected patterns. Unusual packet sizes, high packet retransmissions, or suspicious communication between hosts may indicate network attacks or security breaches.
-¢ Follow packet streams:
+7.Follow packet streams:
 Wireshark provides the ability to follow specific packet streams, allowing you to track conversations between hosts. This feature is useful for understanding the flow of data and identifying potential security vulnerabilities.
 Statistics:
 Wireshark offers a variety of statistical tools to analyze captured network traffic. Some key statistics that can be obtained include:
 
-¢ Packet and byte counts:
+8.Packet and byte counts:
 Wireshark provides statistics on the total number of packets captured and the amount of data transferred.
 [PICTURE]
 https://imgur.com/lUrPk3W
 
-¢ Protocol distribution:
+9.Protocol distribution:
 Wireshark generates a breakdown of the protocols present in the captured traffic, allowing users to identify the most dominant protocols.
 [PICTURE]
 https://imgur.com/oMmcxSn
 
-¢ Conversations
+10.Conversations
 Wireshark enables the analysis of conversations between hosts, providing information about the number of packets, bytes exchanged, and data transfer rates.
 [PICTURE]
 https://imgur.com/DGEtLiU
 
-¢ Throughput and latency:
+11.Throughput and latency:
 By analyzing timing information within captured packets, Wireshark can calculate network throughput and measure latency, assisting in performance evaluation and troubleshooting.
 ¢ TCP analysis:
 Wireshark offers comprehensive TCP statistics, including round-trip times, retransmissions, out-of-order packets, and TCP window sizes, aiding in diagnosing TCP-related issues.
