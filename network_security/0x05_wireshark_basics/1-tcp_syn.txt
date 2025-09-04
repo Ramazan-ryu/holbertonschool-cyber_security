@@ -1,1 +1,1 @@
-ip.addr==172.22.101.90
+tcp.flag.scan==1
