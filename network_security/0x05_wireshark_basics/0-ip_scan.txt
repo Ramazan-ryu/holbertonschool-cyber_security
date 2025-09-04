@@ -1,2 +1,2 @@
 #!/bin/bash
-tcp && udp
+tcp and  udp and icmp
