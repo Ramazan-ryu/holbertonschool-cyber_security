@@ -1,2 +1,2 @@
 #!/bin/bash
-tcp\n udp\n icmp
+tcp.port==6 and  udp.port==17 and icmp.port==1
