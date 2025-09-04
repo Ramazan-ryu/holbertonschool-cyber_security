@@ -1,2 +1,2 @@
 #!/bin/bash
-tcp.port==6 and  udp.port==17 and icmp.port==1
+ip.proto >1
