@@ -1,1 +1,1 @@
-tcp.flag.scan==1
+tcp.flags.scan==1
