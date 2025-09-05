@@ -1,1 +1,1 @@
-arp
+arp and arp.dst.hlen == 60 and arp.dst.hw_mac
