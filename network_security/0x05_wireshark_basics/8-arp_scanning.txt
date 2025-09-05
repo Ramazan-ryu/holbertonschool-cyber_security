@@ -1,1 +1,1 @@
-arp and arp.dst.hlen == 60 and arp.dst.hw_mac and arp.src.hw_mac
+arp and arp.dst.hlen == 60 and arp.dst.hw_mac == 00:00:00:00:00:00 
