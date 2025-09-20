@@ -1,18 +1,19 @@
 #!/bin/bash
-hash=$1
+# Simple XOR decoder (numbers + letters)
 
-# Remove the {xor} prefix
-hash=${hash#"{xor}"}
+KEY=${1:-42}  # XOR key, default 42
 
-# Base64 decode and handle null bytes properly
-decoded=$(echo $hash | base64 -d 2>/dev/null | tr -d '\000')
+echo "Enter text to decode:"
+read input
 
-# XOR with 0x0F (WebSphere key) - 15 decimal
-result=""
-while IFS= read -r -n1 char; do
-  byte=$(printf "%d" "'$char")
-  xor_byte=$((byte ^ 15))
-  result+=$(printf "\\$(printf "%03o" $xor_byte)")
-done <<< "$decoded"
+output=""
 
-echo -n "$result"
+for (( i=0; i<${#input}; i++ )); do
+    c="${input:$i:1}"
+    # получаем ASCII код, применяем XOR, обратно в символ
+    code=$(( $(printf '%d' "'$c") ^ KEY ))
+    output+=$(printf "\\x%x" "$code")
+done
+
+echo "Decoded: $output"
+
