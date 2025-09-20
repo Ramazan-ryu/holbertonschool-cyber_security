@@ -1,13 +1,18 @@
 #!/bin/bash
 hash=$1
+
+# Remove the {xor} prefix
 hash=${hash#"{xor}"}
 
-decoded=$(echo $hash | base64 -d 2>/dev/null)
+# Base64 decode and handle null bytes properly
+decoded=$(echo $hash | base64 -d 2>/dev/null | tr -d '\000')
+
+# XOR with 0x0F (WebSphere key) - 15 decimal
 result=""
-for ((i=0; i<${#decoded}; i++)); do
-  byte=$(printf "%d" "'${decoded:$i:1}")
+while IFS= read -r -n1 char; do
+  byte=$(printf "%d" "'$char")
   xor_byte=$((byte ^ 15))
   result+=$(printf "\\$(printf "%03o" $xor_byte)")
-done
+done <<< "$decoded"
 
 echo -n "$result"
