@@ -1,2 +1,2 @@
 #!/bin/bash
-chmod $1
+sudo chmod u+x $1
