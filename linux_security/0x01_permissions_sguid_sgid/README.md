@@ -48,3 +48,22 @@ Write a bash script that Finds all files modified in the last 24 hours with SUID
 Your script should accept the directory as an arguments $1.
 You should use -mtime option.
 File lines length = 2
+
+
+7. Others can read the files, but no writing privileges allowed—because files deserve their secrets too!
+Write a bash script that Changes permissions of all files in a directory to read-only for others without changing owner/group permissions.
+
+Your script should accept the directory as an arguments $1.
+File lines length = 2
+
+8. Changing file owners, one friendship at a time!
+Write a bash script that Changes permissions that changes the owner of files in a directory to user3, but only if the current owner is user2
+
+Your script should accept the directory as an arguments $1.
+File lines length = 2
+
+9. Empty files got a promotion – now they're living large with full permissions!
+Write a bash script that finds all empty files in a directory and adds full permissions for everyone to these files.
+
+Your script should accept the directory as an arguments $1.
+File lines length = 2
