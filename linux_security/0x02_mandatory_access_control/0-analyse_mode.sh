@@ -1,2 +1,2 @@
 #!/bin/bash
-sestratus 2>/dev/null
+sestatus 2>/dev/null
