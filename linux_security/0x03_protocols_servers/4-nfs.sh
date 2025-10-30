@@ -1,2 +1,2 @@
 #!/bin/bash
-nmap -p 111 --script nfs* $1
+showmount -e $1
