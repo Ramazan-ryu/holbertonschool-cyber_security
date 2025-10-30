@@ -1,2 +1,2 @@
 #!/bin/bash
-nmap -
+grep -RI "public" /etc/snmp* 2>/dev/null
