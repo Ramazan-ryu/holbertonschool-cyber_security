@@ -1,2 +1,2 @@
 #!/bin/bash
-lynis
+lynis audit system
