@@ -1,0 +1,2 @@
+#!/bin/bash
+grep "Accepted password for root" auth.log|  sort -u | cut -d" "  -f11 | uniq -c  |wc -l
