@@ -1,0 +1,10 @@
+# Nmap 7.95 scan initiated Sun Dec 14 04:18:18 2025 as: /usr/lib/nmap/nmap --privileged "--script=banner ssl-enum-ciphers default smb-enum-domains" -oN service_enumeration_results.txt scanme.nmap.org
+NSE: failed to initialize the script engine:
+/usr/share/nmap/nse_main.lua:829: 'banner ssl-enum-ciphers default smb-enum-domains' did not match a category, filename, or directory
+stack traceback:
+	[C]: in function 'error'
+	/usr/share/nmap/nse_main.lua:829: in local 'get_chosen_scripts'
+	/usr/share/nmap/nse_main.lua:1364: in main chunk
+	[C]: in ?
+
+QUITTING!
