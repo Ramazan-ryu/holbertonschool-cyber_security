@@ -21,7 +21,7 @@ if options[:add]
 
 elsif options[:list]
   puts "Tasks:\n\n"                          # Заголовок
-  tasks.each_with_index { |t, i| puts "#{i+1}.   #{t}" }  # нумерация задач
+  tasks.each { |t| puts t }
 
 elsif options[:remove]
   i = options[:remove] - 1                   # Индекс 1-based
