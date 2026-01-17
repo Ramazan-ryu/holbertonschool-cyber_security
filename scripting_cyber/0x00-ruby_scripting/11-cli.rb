@@ -20,6 +20,7 @@ if options[:add]
   puts "Task '#{options[:add]}' added."
 
 elsif options[:list]
+  puts "Tasks:\n\n"                          # Заголовок
   puts tasks                                 # Список задач
 
 elsif options[:remove]
