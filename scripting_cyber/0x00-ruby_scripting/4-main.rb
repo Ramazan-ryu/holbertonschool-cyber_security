@@ -1,13 +1,13 @@
-#!/usr/bin/env
+#!/usr/bin/env ruby
 
 
-requirerelative "3-read_file"
+require_relative '3-read_file'
 
-requirerelative "4-write_file"
+require_relative '4-write_file'
 
-file1_path = ‘file2.json’
+file1_path = 'file2.json'
 
-file2_path = ‘file.json’
+file2_path = 'file.json'
 
 merge_json_files(file1_path, file2_path)
 
