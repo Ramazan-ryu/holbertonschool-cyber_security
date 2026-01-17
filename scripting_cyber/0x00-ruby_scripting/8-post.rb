@@ -2,7 +2,6 @@
 require 'net/http'
 require 'json'
 require 'uri'
-
 def post_request(url, body_params = {})
   uri = URI(url)
   http = Net::HTTP.new(uri.host, uri.port)
@@ -16,4 +15,3 @@ def post_request(url, body_params = {})
   puts "Response status: #{response.code} #{response.message}"
   puts "\nResponse body:\n\n#{JSON.pretty_generate(JSON.parse(response.body))}"
 end
-
