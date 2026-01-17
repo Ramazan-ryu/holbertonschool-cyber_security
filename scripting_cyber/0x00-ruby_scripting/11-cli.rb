@@ -1,74 +1,38 @@
 #!/usr/bin/env ruby
 require 'optparse'
 
-# Define the file where tasks will be stored
-TASK_FILE = "tasks.txt"
-
-# Ensure the file exists so read operations don't fail
-File.open(TASK_FILE, 'a') {}
+file = 'tasks.txt'
+File.write(file, "") unless File.exist?(file)
+tasks = File.readlines(file, chomp: true)
 
 options = {}
-
-opt_parser = OptionParser.new do |opts|
+OptionParser.new do |opts|
   opts.banner = "Usage: cli.rb [options]"
+  opts.on("-aTASK", "--add TASK", "Add a new task") { |t| options[:add] = t }
+  opts.on("-l", "--list", "List all tasks") { options[:list] = true }
+  opts.on("-rINDEX", "--remove INDEX", Integer, "Remove a task by index") { |i| options[:remove] = i }
+  opts.on("-h", "--help", "Show help") { puts opts; exit }
+end.parse!
 
-  opts.on("-a", "--add TASK", "Add a new task") do |task|
-    options[:add] = task
-  end
-
-  opts.on("-l", "--list", "List all tasks") do
-    options[:list] = true
-  end
-
-  opts.on("-r", "--remove INDEX", Integer, "Remove a task by index") do |index|
-    options[:remove] = index
-  end
-
-  opts.on("-h", "--help", "Show help") do
-    puts opts
-    exit
-  end
-end
-
-# Parse the command line arguments
-begin
-  opt_parser.parse!
-rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
-  puts e.message
-  puts opt_parser
-  exit 1
-end
-
-# Logic for Adding a Task
 if options[:add]
-  File.open(TASK_FILE, "a") do |f|
-    f.puts options[:add]
-  end
+  tasks << options[:add]
+  File.write(file, tasks.join("\n") + "\n")
   puts "Task '#{options[:add]}' added."
-end
 
-# Logic for Listing Tasks
-if options[:list]
-  tasks = File.readlines(TASK_FILE)
-  if tasks.empty?
-    puts "No tasks found."
+elsif options[:list]
+  puts "Tasks:\n"  # пустая строка после заголовка
+  tasks.each_with_index { |t, i| puts "#{i+1}. #{t}" }  # нумерация задач
+
+elsif options[:remove]
+  i = options[:remove] - 1
+  if tasks[i]
+    puts "Task '#{tasks.delete_at(i)}' removed."
+    File.write(file, tasks.join("\n") + "\n")
   else
-    puts tasks.map(&:strip)
+    puts "Invalid index."
   end
+
+else
+  puts "Use -h for help."
 end
 
-# Logic for Removing a Task
-if options[:remove]
-  tasks = File.readlines(TASK_FILE)
-  index = options[:remove] - 1 # Convert to 0-based index
-
-  if index >= 0 && index < tasks.length
-    removed_task = tasks.delete_at(index).strip
-    File.open(TASK_FILE, "w") do |f|
-      f.puts tasks
-    end
-    puts "Task '#{removed_task}' removed."
-  else
-    puts "Error: Task at index #{options[:remove]} not found."
-  end
-end
