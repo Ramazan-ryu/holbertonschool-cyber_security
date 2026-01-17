@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative ‘2-prime’
+require_relative "2-prime"
 
 puts prime(5)
 
