@@ -6,7 +6,7 @@ require 'fileutils'
 
 # Check arguments
 if ARGV.length != 2
-  puts "Usage: 9-download_file.rb URL LOCALFILE_PATH"
+  puts "Usage: 9-download_file.rb URL LOCAL_FILE_PATH"
   exit 1
 end
 
