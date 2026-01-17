@@ -4,7 +4,7 @@ require 'digest'
 
 # Check arguments
 if ARGV.length != 2
-  puts "Usage: 10-passwordcracked.rb HASHED_PASSWORD DICTIONARY_FILE"
+  puts "Usage: 10-password_cracked.rb HASHED_PASSWORD DICTIONARY_FILE"
   exit 1
 end
 
@@ -23,5 +23,4 @@ File.foreach(dictionary_file) do |word|
     break
   end
 end
-
 puts "Password not found in dictionary." unless found
