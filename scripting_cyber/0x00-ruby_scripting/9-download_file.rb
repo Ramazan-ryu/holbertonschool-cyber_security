@@ -32,4 +32,3 @@ begin
 rescue StandardError => e
   puts "Failed to download file: #{e.message}"
 end
-
