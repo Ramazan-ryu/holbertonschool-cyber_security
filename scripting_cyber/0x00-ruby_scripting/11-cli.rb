@@ -1,50 +1,37 @@
 #!/usr/bin/env ruby
-
 require 'optparse'
 
-TASK_FILE = "tasks.txt"
+file = 'tasks.txt'
+File.write(file, "") unless File.exist?(file)
+tasks = File.readlines(file, chomp: true)
 
-options = {}
-
-OptionParser.new do |opts|
-  opts.banner = "Usage: cli.rb [options]"
-
-  opts.on("-a TASK", "--add TASK", "Add a new task") do |task|
-    options[:add] = task
-  end
-
-  opts.on("-l", "--list", "List all tasks") do
-    options[:list] = true
-  end
-
-  opts.on("-r INDEX", "--remove INDEX", "Remove a task by index") do |index|
-    options[:remove] = index.to_i
-  end
-
-  opts.on("-h", "--help", "Show help") do
-    puts opts
-    exit
-  end
+opts = {}
+OptionParser.new do |o|
+  o.on("-aTASK", "--add TASK") { |t| opts[:add] = t }
+  o.on("-l", "--list") { opts[:list] = true }
+  o.on("-rINDEX", "--remove INDEX", Integer) { |i| opts[:remove] = i }
+  o.on("-h", "--help") { puts o; exit }
 end.parse!
 
-# create file if not exists
-File.write(TASK_FILE, "") unless File.exist?(TASK_FILE)
+if opts[:add]                  # Добавляем задачу
+  tasks << opts[:add]
+  File.write(file, tasks.join("\n") + "\n")
+  puts "Task '#{opts[:add]}' added."
 
-# add task
-if options[:add]
-  File.open(TASK_FILE, "a") { |f| f.puts options[:add] }
-  puts "Task ‘#{options[:add]}’ added."
+elsif opts[:list]               # Список задач
+  puts "Tasks:\n\n"
+  puts tasks
+
+elsif opts[:remove]             # Удаляем задачу
+  i = opts[:remove] - 1        # Индекс 1-based
+  if tasks[i]
+    puts "Task '#{tasks.delete_at(i)}' removed."
+    File.write(file, tasks.join("\n") + "\n")
+  else
+    puts "Invalid index."
+  end
+
+else
+  puts "Use -h for help."      # Если ничего не выбрали
 end
 
-# list tasks
-if options[:list]
-  File.readlines(TASK_FILE).each { |task| puts task }
-end
-
-# remove task
-if options[:remove]
-  tasks = File.readlines(TASK_FILE)
-  removed = tasks.delete_at(options[:remove] - 1)
-  File.write(TASK_FILE, tasks.join)
-  puts "Task ‘#{removed.strip}’ removed."
-end
