@@ -1,38 +1,88 @@
-#!/usr/bin/env ruby
 require 'optparse'
 
-file = 'tasks.txt'
-File.write(file, "") unless File.exist?(file)   # Создать файл, если нет
-tasks = File.readlines(file, chomp: true)       # Считать все задачи
+# File to store tasks
+TASKS_FILE = 'tasks.txt'
 
+# Load tasks from the file or initialize an empty array
+def load_tasks
+  if File.exist?(TASKS_FILE)
+    File.readlines(TASKS_FILE).map(&:chomp)
+  else
+    []
+  end
+end
+
+# Save tasks to the file
+def save_tasks(tasks)
+  File.open(TASKS_FILE, 'w') do |file|
+    tasks.each { |task| file.puts(task) }
+  end
+end
+
+# Add a new task
+def add_task(task)
+  tasks = load_tasks
+  tasks << task
+  save_tasks(tasks)
+  puts "Task '#{task}' added."
+end
+
+# List all tasks
+def list_tasks
+  tasks = load_tasks
+  if tasks.empty?
+    puts "No tasks found."
+  else
+    puts "Tasks:"
+    tasks.each_with_index do |task, index|
+      puts "#{index + 1}. #{task}"
+    end
+  end
+end
+
+# Remove a task by index
+def remove_task(index)
+  tasks = load_tasks
+  if index < 1 || index > tasks.size
+    puts "Error: Invalid task index."
+  else
+    removed_task = tasks.delete_at(index - 1)
+    save_tasks(tasks)
+    puts "Task '#{removed_task}' removed."
+  end
+end
+
+# CLI options parsing
 options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: cli.rb [options]"
-  opts.on("-aTASK", "--add TASK", "Add a new task") { |t| options[:add] = t }
-  opts.on("-l", "--list", "List all tasks") { options[:list] = true }
-  opts.on("-rINDEX", "--remove INDEX", Integer, "Remove a task by index") { |i| options[:remove] = i }
-  opts.on("-h", "--help", "Show help") { puts opts; exit }
-end.parse!
 
-if options[:add]
-  tasks << options[:add]                     # Добавляем задачу
-  File.write(file, tasks.join("\n") + "\n")  # Сохраняем в файл
-  puts "Task '#{options[:add]}' added."
-
-elsif options[:list]
-  puts "Tasks:\n"                          # Заголовок
-  tasks.each_with_index { |t, i| puts "#{i+1}. #{t}" }  # нумерация задач
-
-elsif options[:remove]
-  i = options[:remove] - 1                   # Индекс 1-based
-  if tasks[i]
-    puts "Task '#{tasks.delete_at(i)}' removed."
-    File.write(file, tasks.join("\n") + "\n")
-  else
-    puts "Invalid index."
+  opts.on('-a', '--add TASK', 'Add a new task') do |task|
+    options[:add] = task
   end
 
-else
-  puts "Use -h for help."                    # Если ничего не выбрали
-end
+  opts.on('-l', '--list', 'List all tasks') do
+    options[:list] = true
+  end
 
+  opts.on('-r', '--remove INDEX', Integer, 'Remove a task by index') do |index|
+    options[:remove] = index
+  end
+
+  opts.on('-h', '--help', 'Show help') do
+    puts opts
+    exit
+  end
+end.parse!
+
+# Handle options
+if options[:add]
+  add_task(options[:add])
+elsif options[:list]
+  list_tasks
+elsif options[:remove]
+  remove_task(options[:remove])
+else
+  puts "Usage: cli.rb [options]"
+  puts "Run with -h for help."
+end
