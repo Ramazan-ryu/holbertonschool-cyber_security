@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-# 9-download_file.rb
 
 require 'open-uri'
 require 'uri'
