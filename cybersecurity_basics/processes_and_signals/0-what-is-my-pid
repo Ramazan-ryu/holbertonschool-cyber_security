@@ -1,2 +1,2 @@
-#!/bin/bash
-ps -o pid=
+#!/usr/bin/env bash
+ps
