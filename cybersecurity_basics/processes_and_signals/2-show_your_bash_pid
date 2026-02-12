@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 #
-apropos bahgbvfdew45grtybhgtr43r<F3>45gtrbgfvre4r3245gtrbgfdb
+ps -faux | grep "bash"
