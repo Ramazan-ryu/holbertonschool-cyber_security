@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 PIDFILE="/var/run/myscript.pid"
-echo $$ > "$PID_FILE"
+echo $$>"$PIDFILE"
 cleanup_and_exit() {
     rm -f "$PIDFILE"
     exit 0
