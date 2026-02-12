@@ -1,2 +1,2 @@
 #!/bin/bash
-ps
+ps -o pid=
