@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo tcpdump -c 5 eth1
+sudo tcpdump -c 5 -i $1
