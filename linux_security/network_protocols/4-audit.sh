@@ -1,2 +1,2 @@
 #!/bin/bash
-grep -Ev '^#|^$' /etc/ssh/sshd_config
+grep -h -Ev '^#|^$' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf
