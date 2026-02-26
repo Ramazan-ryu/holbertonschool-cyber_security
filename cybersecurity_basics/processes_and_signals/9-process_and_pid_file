@@ -1,36 +1,15 @@
 #!/usr/bin/env bash
 #
 PIDFILE="/var/run/myscript.pid"
-
-# Create PID file
-echo $$ > "$PIDFILE"
-
-# SIGTERM handler
-term_handler() {
-    echo "I hate the kill command"
+echo $$>"$PIDFILE"
+cleanup_and_exit() {
     rm -f "$PIDFILE"
     exit 0
 }
-
-# SIGINT handler (Ctrl+C)
-int_handler() {
-    echo "Y U no love me?!"
-}
-
-# SIGQUIT handler
-quit_handler() {
-    rm -f "$PIDFILE"
-    exit 0
-}
-
-# Trap signals
-trap term_handler SIGTERM
-trap int_handler SIGINT
-trap quit_handler SIGQUIT
-
-# Infinite loop
-while true
-do
+trap 'echo "I hate the kill command"; cleanup_and_exit' SIGTERM
+trap 'echo "Y U no love me?!"' SIGINT
+trap 'cleanup_and_exit' SIGQUIiT
+while true; do
     echo "To infinity and beyond"
-    sleep 1
+    sleep 2
 done
