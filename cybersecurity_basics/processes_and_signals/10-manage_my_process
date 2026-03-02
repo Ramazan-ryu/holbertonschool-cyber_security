@@ -13,7 +13,7 @@ then
     rm -rf  /tmp/my_process.pid
 elif [ "${1}" == "restart" ]
 then
-    kill "$(cat /var/run/my_process.pid)"
+    kill "$(cat /tmp/my_process.pid)"
     rm -rf /tmp/my_process.pid
     ./manage_my_process &
     touch /tmp/my_process.pid
