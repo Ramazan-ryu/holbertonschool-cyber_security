@@ -1,0 +1,120 @@
+╔═══════════════════════════════════════════════════════════╗
+║          LEGAL CONSIDERATIONS CHECKLIST                   ║
+║          Jurisdiction: [State/Country]                    ║
+╠═══════════════════════════════════════════════════════════╣
+
+1. TRESPASSING LAWS
+   [ ] Research trespassing statutes in [State]
+   [ ] Confirm: Criminal trespass vs. civil trespass?
+   [ ] Penalties: Misdemeanor vs. felony thresholds?
+   [ ] Does [State] require "posted notice" for trespass?
+   [ ] Does authorization letter provide affirmative defense?
+
+2. BURGLARY / BURGLARY TOOLS LAWS
+   [ ] Check if lock picks are legal to possess in [State]
+       ILLEGAL in: Virginia, Mississippi, Nevada, Ohio
+           (requires locksmith license or authorization)
+   [ ] Research "burglary tools" / "possession of instruments
+       of crime" statutes
+   [ ] Does possession of lock picks + being in restricted
+       area = felony charge even WITH authorization?
+   [ ] If illegal: Obtain specific exemption letter from
+       local law enforcement or remove lock picking from scope
+
+3. PROPERTY AUTHORITY
+   [ ] Confirm client has legal authority to authorize testing:
+       - Does client OWN the building? (Yes/No)
+       - Does client LEASE the space? (Yes/No)
+   [ ] If leased: Review lease agreement for restrictions on:
+       - Physical security testing
+       - Third-party access
+       - Lock manipulation
+   [ ] If leased: Obtain written consent from property owner/
+       landlord (REQUIRED tenant authorization alone may
+       not be sufficient)
+   [ ] If shared building: Confirm scope explicitly excludes
+       non-client tenant spaces
+
+4. LAW ENFORCEMENT NOTIFICATION
+   [ ] Discuss with client: Notify police in advance?
+       - RECOMMENDED for after-hours testing
+       - REQUIRED in some jurisdictions
+   [ ] If client chooses NOT to notify:
+       - Document risk acceptance in ROE
+       - Increase liability insurance coverage
+       - Prepare for higher risk of detention/arrest
+   [ ] If notifying: Obtain police incident/notification number
+
+5. RECORDING LAWS
+   [ ] Check if [State] is one-party or two-party consent for
+       audio recording
+   [ ] Confirm video recording laws (public vs. private property)
+   [ ] If two-party consent state: Remove audio recording from
+       scope or obtain consent
+
+6. ASSAULT / THREATENING BEHAVIOR
+   [ ] Review [State] statutes on:
+       - Simple assault (verbal threats)
+       - Menacing behavior
+       - Impersonating law enforcement (often a felony)
+   [ ] Ensure ROE explicitly prohibits threatening behavior
+   [ ] Confirm pretexts do NOT involve impersonating police,
+       fire, or emergency services
+
+7. DAMAGE TO PROPERTY
+   [ ] Confirm client's insurance covers testing-related damage
+   [ ] Establish damage threshold requiring immediate reporting
+   [ ] Review [State] criminal mischief / vandalism statutes
+   [ ] Ensure "non-destructive only" is clearly defined in ROE
+
+8. DATA PROTECTION / PRIVACY LAWS
+   [ ] If testing involves viewing documents or screens:
+       - GDPR compliance (if EU data processed)
+       - HIPAA compliance (if healthcare data visible)
+       - PCI DSS compliance (if payment card data visible)
+   [ ] Establish protocol for handling sensitive data discovered
+       during testing
+
+9. INSURANCE VERIFICATION
+   [ ] Confirm testing firm has current insurance:
+       - General liability (minimum $1M)
+       - Errors & omissions (minimum $1M)
+       - Workers' compensation (if required by state)
+   [ ] Provide certificate of insurance to client
+   [ ] Confirm client has reviewed and accepted coverage limits
+
+10. ENGAGEMENT CONTRACT REVIEW
+    [ ] Contract reviewed by legal counsel (testing firm)
+    [ ] Contract reviewed by legal counsel (client)
+    [ ] Indemnification clauses clearly define liability limits
+    [ ] Termination clause allows immediate halt if legal
+        issues arise
+    [ ] Dispute resolution process defined (arbitration/
+        litigation)
+
+═══════════════════════════════════════════════════════════
+
+RISK ACCEPTANCE STATEMENT:
+
+By signing below, both parties acknowledge that physical
+penetration testing carries inherent legal risks including
+but not limited to:
+  - Risk of tester detention or arrest during verification
+  - Potential for confrontation with security or law enforcement
+  - Possible criminal charges if authorization cannot be
+    immediately verified
+  - Risk that authorization letter may not prevent detention
+
+Both parties agree that all legal considerations above have
+been reviewed and appropriate measures have been taken to
+mitigate these risks.
+
+Client Representative:
+
+Signature: ____________________  Date: __________
+
+Testing Firm Representative:
+
+Signature: ____________________  Date: __________
+
+╚═══════════════════════════════════════════════════════════╝

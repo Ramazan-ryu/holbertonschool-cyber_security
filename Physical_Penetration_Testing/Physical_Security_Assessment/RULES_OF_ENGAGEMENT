@@ -1,0 +1,211 @@
+╔═══════════════════════════════════════════════════════════╗
+║     RULES OF ENGAGEMENT - PHYSICAL PENETRATION TEST       ║
+╠═══════════════════════════════════════════════════════════╣
+
+DOCUMENT CONTROL
+  Document ID:    ROE-PHYS-[YEAR]-[NUM]
+  Version:        1.0
+  Classification: CONFIDENTIAL
+  Date:           [Date]
+  Author:         [Engagement Lead]
+  Approved By:    [Client Authorized Representative]
+
+═══════════════════════════════════════════════════════════
+
+SECTION 1: ENGAGEMENT OVERVIEW
+
+  Client:            Nextera Financial Group
+  Testing Firm:      [Your Company]
+  Engagement Type:   Physical Penetration Test
+  Engagement Dates:  [Start] to [End]
+  SOW Reference:     [SOW Number]
+
+═══════════════════════════════════════════════════════════
+
+SECTION 2: AUTHORIZED ACTIVITIES
+
+  The testing team is authorized to perform the following:
+
+  2.1 Social Engineering
+      - In-person pretexting (IT technician, delivery, vendor)
+      - Tailgating through secured doors
+      - Shoulder surfing for credentials
+      - Phone-based pretexting to gain physical access info
+
+  2.2 Physical Bypass
+      - Non-destructive lock picking
+      - Badge cloning using captured credentials
+      - Door latch manipulation
+      - Accessing unlocked entry points
+
+  2.3 Surveillance
+      - Photography of security controls
+      - Video recording (exterior only unless approved)
+      - Documenting guard patrol patterns
+      - Parking lot observation
+
+  2.4 Device Deployment
+      - USB drop devices (pre-approved payloads ONLY)
+      - Rogue network devices (if approved in SOW)
+      - Keyloggers (physical — if approved in SOW)
+
+2.5 Found Credentials / Unlocked Access
+      - Found badge/keys/passwords: Photograph, document, report to
+        client immediately. Do NOT use without explicit written approval.
+      - Unlocked doors after hours: Document, report, do NOT enter
+        without approval.
+      - Shoulder-surfed credentials: Document only; use only if client
+        approves in writing.
+
+═══════════════════════════════════════════════════════════
+
+SECTION 3: PROHIBITED ACTIVITIES
+
+  The following are strictly PROHIBITED:
+
+  - Any activity causing physical damage to property
+  - Accessing personal belongings of employees
+  - Threatening or intimidating behavior
+  - Using real weapons or weapon replicas
+  - Tampering with safety systems (fire, HVAC, elevators)
+  - Any illegal activity beyond authorized scope
+  - Testing during active emergency situations
+  - Photography of individuals without testing purpose
+
+═══════════════════════════════════════════════════════════
+
+SECTION 4: COMMUNICATION PROTOCOL
+
+  4.1 Primary Client Contact (Aware of Test)
+      Name:   [Name]
+      Title:  [Title]
+      Phone:  [24/7 Phone]
+      Email:  [Email]
+
+  4.2 Secondary Client Contact
+      Name:   [Name]
+      Title:  [Title]
+      Phone:  [24/7 Phone]
+
+  4.3 Testing Team Lead
+      Name:   [Your Name]
+      Phone:  [Phone]
+      Email:  [Email]
+
+  4.4 Legal Counsel
+      Firm:   [Law Firm]
+      Phone:  [Phone]
+
+  CHECK-IN SCHEDULE:
+      - Daily check-in at 08:00 and 17:00
+      - Immediate notification upon any incident
+      - End-of-day summary via encrypted email
+
+
+4.5 Backup Verification (if primary + secondary unreachable):
+      - Provide authorization letter + contract to law enforcement
+      - Testing firm legal counsel verifies engagement
+      - Comply fully; testing CEASES until re-authorized
+      - Verify can take 6–12 hours; detention is possible — prepare.
+═══════════════════════════════════════════════════════════
+
+SECTION 5: INCIDENT HANDLING
+
+  If a tester is confronted or detained:
+
+  Step 1: Remain calm and non-confrontational
+  Step 2: State "I am conducting an authorized security
+          assessment for [Client Contact Name]"
+  Step 3: Present the Authorization Letter
+  Step 4: Request they call the Primary Client Contact
+  Step 5: Do NOT resist or attempt to flee
+  Step 6: If law enforcement arrives, comply fully and
+          request they verify with the client contact
+  Step 7: Contact Testing Team Lead and Legal Counsel
+
+NOTE: Authorization letter = verification tool, not immunity. You may
+  be detained 6–12 hours during verification. Carry letter on your
+  person; memorize client contact number. NEVER resist or flee.
+
+
+═══════════════════════════════════════════════════════════
+
+SECTION 6: EVIDENCE HANDLING
+
+  - All photos/video stored on encrypted devices only
+  - Evidence transferred to client via secure channel
+  - All evidence destroyed 30 days after report delivery
+  - No evidence stored on personal devices
+  - No evidence shared on social media or public forums
+  - Chain of custody maintained for all physical evidence
+
+═══════════════════════════════════════════════════════════
+
+SECTION 7: SIGNATURES
+
+  Client Authorized Representative:
+  Name:       ________________________
+  Title:      ________________________
+  Signature:  ________________________
+  Date:       ________________________
+
+  Testing Firm Authorized Representative:
+  Name:       ________________________
+  Title:      ________________________
+  Signature:  ________________________
+  Date:       ________________________
+
+═══════════════════════════════════════════════════════════
+
+SECTION 8: INSURANCE & LIABILITY
+
+  8.1 Required Insurance Coverage
+
+      Testing Firm Insurance Certificates:
+
+        General Liability:       $[Amount] - Policy #[Number]
+        Errors & Omissions:      $[Amount]  Policy #[Number]
+        Workers' Compensation:   $[Amount] — Policy #[Number]
+
+      Minimum Required Coverage: $1,000,000 per occurrence
+
+      Certificate Holder: [Client Company Name]
+
+  8.2 Hold Harmless Agreement
+
+      Client agrees to hold testing firm and its employees
+      harmless for:
+
+      - Injuries sustained by testers while on client
+        property during authorized testing activities
+
+      - Damage to client property that occurs as a direct
+        result of authorized testing activities, provided
+        such activities were conducted within the scope
+        defined in this ROE
+
+      Testing firm agrees to hold client harmless for:
+
+      - Actions taken by client security personnel or law
+        enforcement in response to tester activities,
+        provided such responses were reasonable and lawful
+
+  8.3 Liability Limitations
+
+      Testing firm's total liability under this engagement
+      is limited to the lesser of:
+
+        (a) The total engagement fee
+        (b) The limits of applicable insurance coverage
+
+      Client acknowledges that physical penetration testing
+      carries inherent risks including but not limited to:
+
+        - Potential for confrontation with security/police
+        - Risk of detention or arrest during verification
+        - Possibility of equipment damage or loss
+        - Exposure to workplace hazards
+
+═══════════════════════════════════════════════════════════
+
+╚═══════════════════════════════════════════════════════════╝

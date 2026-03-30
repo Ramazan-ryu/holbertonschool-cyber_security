@@ -1,0 +1,73 @@
+===========================================================
+  PHYSICAL PENETRATION TEST - SCOPE DEFINITION
+===========================================================
+
+Client:          Nextera Financial Group
+Engagement Lead: [Your Name]
+Date:            [Date]
+Version:         1.0
+
+-----------------------------------------------------------
+1. IN-SCOPE LOCATIONS
+-----------------------------------------------------------
+  a. Corporate HQ - 1200 Commerce Blvd, Suite 100-300
+     - All three floors
+     - Ground-floor data center
+     - Parking garage (Levels B1, B2)
+     - Loading dock area
+     - Lobby and reception area
+
+  b. Satellite Office - 450 Business Park Dr, Suite 210
+     - Suite 210 only (shared building)
+     - Shared parking lot (observation only)
+
+-----------------------------------------------------------
+2. IN-SCOPE ACTIVITIES
+-----------------------------------------------------------
+  [ ] Tailgating / Piggybacking
+  [ ] Social engineering (in-person pretexting)
+  [ ] Lock picking (non-destructive only)
+  [ ] Badge cloning (if badge obtained)
+  [ ] USB drop attacks (pre-approved payloads only)
+  [ ] Dumpster diving
+  [ ] Photography of security controls
+  [ ] Shoulder surfing
+  [ ] Phishing for physical access (e.g., fake delivery)
+
+-----------------------------------------------------------
+3. OUT-OF-SCOPE
+-----------------------------------------------------------
+  [X] Forced entry / property damage
+  [X] Accessing personal belongings (purses, wallets)
+  [X] Social engineering of clients/customers
+  [X] Any activity in non-client areas of shared building
+  [X] Accessing HR files or medical records
+  [X] Testing fire alarm or safety systems
+  [X] Vehicle tampering
+
+-----------------------------------------------------------
+4. TARGET OBJECTIVES (FLAGS)
+-----------------------------------------------------------
+  Flag 1: Gain access to the data center floor
+  Flag 2: Obtain a company badge (photograph or clone)
+  Flag 3: Access an executive office (3rd floor)
+  Flag 4: Plant a USB device on a workstation
+  Flag 5: Retrieve sensitive documents from trash/desk
+  Flag 6: Gain access to the satellite office after hours
+
+-----------------------------------------------------------
+5. TESTING WINDOWS
+-----------------------------------------------------------
+  Business Hours:  07:00 – 19:00 Mon-Fri
+  After Hours:     19:00 – 07:00 Mon-Fri
+  Weekend:         Saturday and Sunday (all day)
+
+  Engagement Dates: [Start Date] to [End Date]
+
+-----------------------------------------------------------
+6. PERSONNEL EXCEPTIONS
+-----------------------------------------------------------
+  - CEO (Margaret Chen) - Do NOT social engineer
+  - Active clients/visitors - Do NOT engage
+  - Security guards - May be tested via social engineering
+===========================================================
