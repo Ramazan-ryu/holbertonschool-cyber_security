@@ -1,0 +1,141 @@
+0. Threat Intelligence Profile
+Level: 0
+Manual review
+Scenario:
+Three financial institutions were silently compromised. Analysts suspect FIN7. Your manager says: "I need to know who we are up against. Build me a profile."
+
+Research FIN7 and produce a short but complete threat profile.
+
+Your file must include:
+
+Target Sectors: List the primary industries targeted by FIN7
+
+Motivation: Explain the group's primary objective
+
+Key Techniques: Identify three MITRE ATT&CK techniques:
+
+At least one related to Initial Access
+At least one related to Execution
+Associated Tools: List at least two tools or malware families attributed to FIN7
+
+Known Campaigns: Briefly describe one documented FIN7 campaign
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+
+Scenario:
+The threat profile is approved. Now translate it into action. Think like FIN7, how did they get in, execute, and persist? Write the plan before anyone runs a single command.
+
+Using the MITRE ATT&CK tactic→ technique → procedure model, define three simulation steps:
+
+Step 1: An Initial Access behavior
+Step 2: An Execution behavior
+Step 3: A Persistence or Defense Evasion behavior of your choice
+For each step, provide:
+
+Tactic
+Technique (ID and name)
+Procedure (safe, lab-only description)
+Expected Blue Team Visibility
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+Scenario:
+One hour before the exercise, the client's legal team asks:"If something goes wrong, what happens?" Your lead looks at you. Without this document, the exercise cannot start.
+
+Part A: Safe Simulation Table
+
+Behavior	Risk Level	What Is Allowed	What Is Prohibited	Cleanup Steps
+C2 Beacon	[Low / Medium / High]	[What the tester may do]	[What is strictly off-limits]	[How to remove artifacts after the test]
+Persistence (Registry Run Key)				
+Data Exfiltration				
+Lateral Movement				
+Credential Access				
+Part B: De-confliction Protocol
+
+Write a short protocol defining what happens when the Blue Team detects the test:
+
+Who the Blue Team contacts
+Who validates whether the activity is a simulation
+Whether the test continues or pauses during validation
+What happens if areal incident is discovered during the exercise
+Part C: Emergency Stop Criteria
+
+Define at least three conditions that would immediately halt the simulation. Examples:
+
+Unintended scope breach (activity detected outside agreed lab boundary)
+Real alert triggered in a production system
+System instability or service disruption caused by a simulation step
+
+
+
+
+
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Scenario:
+Mid-exercise, the SOC manager messages your lead:"We found your C2 registered under an operator's personal email." Exercise paused. Client uncomfortable. Methodology exposed. This has happened on real engagements. Make sure it never happens to yours.
+
+Red teamers are not exempt from OpSec failures. A detected red team operation can:
+
+Derail the exercise and invalidate results
+Expose methodology and tools to the Blue Team
+In poorly scoped engagements, cause legal and reputational harm
+Your document must include:
+
+Part A: OpSec Risk Table
+Risk	Likelihood	Impact	Mitigation
+C2 infrastructure exposure			
+Operator identity leakage			
+Tool signature detection			
+Log artifacts left on target systems			
+Part B: Pre-Engagement OpSec Checklist
+Provide a minimum of 8 items covering:
+
+Communication security (encrypted channels for team coordination)
+Infrastructure setup (dedicated, clean C2 redirectors)
+Tool preparation (custom payload compilation, AV evasion baseline)
+Documentation hygiene (no client data on personal devices)
+Part C: Why Red Team OpSec Protects the Client
+Write a short section minimum 3 sentences explaining why red team operational security is not just about protecting the red team, it is a professional obligation to the client.
+
+
+
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Scenario:
+The exercise is over. The CISO joins the call in 30 minutes and wants one answer:"Did your Blue Team catch you?" Turn the raw data into numbers that tell a story.
+
+The exercise is complete. Use the following data:
+
+Metrics Summary
+Metric	Value
+Techniques tested	5
+Techniques detected	3
+Average MTTD	32 minutes
+False positives generated	1
+Your report must include:
+
+1. Detection Rate: Calculate the percentage of techniques detected Detection Rate = 3 / 5 = 60%
+
+2. MTTD Assessment: Is 32 minutes acceptable for a financial institution? Justify your answer using industry benchmarks or threat context.
+
+3. ATT&CK Coverage Table: List all tested techniques with:
+
+ATT&CK ID	Technique Name	Tested	Detected	MTTD
+T1566.001	Spearphishing Attachment	✅	✅	18 min
+…	…	…	…	…
+4. One concrete recommendation per undetected technique
+
+5. Executive Summary: A short paragraph (3 sentences) suitable for a non-technical stakeholder such as a CISO or board member
+
+

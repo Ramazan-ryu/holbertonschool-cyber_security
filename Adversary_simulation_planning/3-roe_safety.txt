@@ -1,0 +1,33 @@
+Part A - Safe Simulation Table:
+
+| Behavior                   | Risk Level            | What Is Allowed                         | What Is Prohibited                      | Cleanup Steps                           |
+|----------------------------|-----------------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
+| C2 Beacon                  | [Low / Medium / High] | [What the tester may do]                | [What is strictly off-limits]           | [How to remove artifacts after the test]|
+| Persistence (Registry Run) | [Low / Medium / High] | [...]                                   | [...]                                   | [...]                                   |
+| Data Exfiltration          | [Low / Medium / High] | [...]                                   | [...]                                   | [...]                                   |
+| Lateral Movement           | [Low / Medium / High] | [...]                                   | [...]                                   | [...]                                   |
+| Credential Access          | [Low / Medium / High] | [...]                                   | [...]                                   | [...]                                   |
+
+Part B - De-confliction Protocol:
+
+1. Point of Contact:
+   [Who does the Blue Team contact when they detect suspicious activity?
+   Provide role and communication channel.]
+
+2. Validation Process:
+   [Who validates whether the detected activity is part of the simulation?
+   How long does validation take?]
+
+3. Test Continuation:
+   [Does the test continue or pause while validation is in progress?
+   What happens after confirmation?]
+
+4. Real Incident Discovery:
+   [What happens if the detected activity is NOT part of the simulation?
+   Who is notified and what procedure is triggered?]
+
+Part C - Emergency Stop Criteria:
+
+[Condition 1]: [Describe the condition that would immediately halt the simulation.]
+[Condition 2]: [...]
+[Condition 3]: [...]

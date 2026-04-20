@@ -1,0 +1,33 @@
+Part A - OpSec Risk Table:
+
+| Risk                                 | Likelihood            | Impact                | Mitigation                              |
+|--------------------------------------|-----------------------|-----------------------|-----------------------------------------|
+| C2 infrastructure exposure           | [Low / Medium / High] | [Low / Medium / High] | [Concrete action to reduce this risk]   |
+| Operator identity leakage            | [Low / Medium / High] | [Low / Medium / High] | [...]                                   |
+| Tool signature detection             | [Low / Medium / High] | [Low / Medium / High] | [...]                                   |
+| Log artifacts left on target systems | [Low / Medium / High] | [Low / Medium / High] | [...]                                   |
+
+Part B - Pre-Engagement OpSec Checklist:
+
+[Category 1 - e.g. Communication Security]
+[ ] [Checklist item 1]
+[ ] [Checklist item 2]
+
+[Category 2 - e.g. Infrastructure Setup]
+[ ] [Checklist item 3]
+[ ] [Checklist item 4]
+
+[Category 3 - e.g. Tool Preparation]
+[ ] [Checklist item 5]
+[ ] [Checklist item 6]
+
+[Category 4 - e.g. Documentation Hygiene]
+[ ] [Checklist item 7]
+[ ] [Checklist item 8]
+
+Part C - Why Red Team OpSec Protects the Client:
+
+[Write a minimum of 3 sentences explaining why red team operational
+security is a professional obligation toward the client — not just
+a self-protective measure. Consider the consequences of an exposed
+operation on the validity of results and the client's real risk exposure.]

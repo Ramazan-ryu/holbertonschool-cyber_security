@@ -1,0 +1,45 @@
+1. Detection Rate:
+
+Techniques Tested:   [number]
+Techniques Detected: [number]
+
+Detection Rate = [detected] / [tested] = [XX%]
+
+[One or two sentences interpreting what this percentage means
+for the Blue Team's detection capability.]
+
+2. MTTD Assessment:
+
+Average MTTD: [XX minutes]
+
+Assessment: [ACCEPTABLE / NOT ACCEPTABLE]
+
+[Justify your answer. Is 32 minutes fast or slow for a financial
+institution facing this specific threat actor? Use threat context
+or industry benchmarks to support your position.]
+
+3. ATT&CK Coverage Table:
+
+| ATT&CK ID  | Technique Name          | Tested        | Detected      | MTTD          |
+|------------|-------------------------|---------------|---------------|---------------|
+| [TXXXX.XXX]| [Technique Name]        | [Yes / No]    | [Yes / No]    | [XX min / -]  |
+| [TXXXX.XXX]| [Technique Name]        | [Yes / No]    | [Yes / No]    | [XX min / -]  |
+| [TXXXX.XXX]| [Technique Name]        | [Yes / No]    | [Yes / No]    | [XX min / -]  |
+| [TXXXX.XXX]| [Technique Name]        | [Yes / No]    | [Yes / No]    | [XX min / -]  |
+| [TXXXX.XXX]| [Technique Name]        | [Yes / No]    | [Yes / No]    | [XX min / -]  |
+
+4. Recommendations Per Undetected Technique:
+
+[TXXXX.XXX] - [Technique Name]:
+[One concrete and actionable recommendation explaining what the Blue
+Team should implement to detect this technique in the future.]
+
+[TXXXX.XXX] - [Technique Name]:
+[...]
+
+5. Executive Summary:
+
+[Write 3  sentences summarizing the exercise outcome for a
+non-technical stakeholder such as a CISO or board member. Avoid
+jargon. Focus on what was tested, what was found, and what action
+is recommended.]
