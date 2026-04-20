@@ -1,0 +1,22 @@
+Emulation Plan: [Threat Actor Name]
+
+Step 1: [Tactic Name]
+- Tactic: [Tactic]
+- Technique: [TXXXX.XXX] — [Technique Name]
+- Procedure: [Describe the simulated behavior in a lab-only context.
+  What action is taken? Against what target? Using what method?
+  Be specific but keep it safe and controlled.]
+- Expected Blue Team Visibility: [List the log sources, alert types, or
+  telemetry the Blue Team should observe if their controls are working.]
+
+Step 2: [Tactic Name]
+- Tactic: [Tactic]
+- Technique: [TXXXX.XXX] — [Technique Name]
+- Procedure: [...]
+- Expected Blue Team Visibility: [...]
+
+Step 3: [Tactic Name]
+- Tactic: [Tactic]
+- Technique: [TXXXX.XXX] — [Technique Name]
+- Procedure: [...]
+- Expected Blue Team Visibility: [...]
