@@ -1,0 +1,41 @@
+Resources
+Read or watch:
+27001-2022-eng.pdf
+https://s3.eu-west-3.amazonaws.com/hbtn.intranet/uploads/misc/2025/4/7fcb248e7ccad6bb3d14d8f81c34185dcefa9a18.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MYA5JM5DUTZGMZG%2F20260427%2Feu-west-3%2Fs3%2Faws4_request&X-Amz-Date=20260427T111621Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=d54e0da0243e0760437c9792e0687c04c86d26a69331bbb03bac2c39b31ae373
+
+
+ISO IEC EN 27002-2022.pdf
+https://s3.eu-west-3.amazonaws.com/hbtn.intranet/uploads/misc/2024/11/0b4ee92dbd83b7930ee24c192c839308e0a93f26.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MYA5JM5DUTZGMZG%2F20260427%2Feu-west-3%2Fs3%2Faws4_request&X-Amz-Date=20260427T111636Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=816cd5ea6d4d209be2e288c5dee61693f204c46c3ddd1fff71c95790b925394d
+
+27002-2013_eng.pdf
+https://s3.eu-west-3.amazonaws.com/hbtn.intranet/uploads/misc/2025/4/376b754dd8ce3295f0c2672b6f08f681a251b638.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MYA5JM5DUTZGMZG%2F20260427%2Feu-west-3%2Fs3%2Faws4_request&X-Amz-Date=20260427T111654Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=864ecbb06c145cdb2601d391d359534f69294dc58da1e190f84ee6cfa1470440
+
+27001-2013_eng.pdf
+https://s3.eu-west-3.amazonaws.com/hbtn.intranet/uploads/misc/2025/4/5c52e0907fc6d7d08343cb32b8884ee693e5f0ba.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MYA5JM5DUTZGMZG%2F20260427%2Feu-west-3%2Fs3%2Faws4_request&X-Amz-Date=20260427T111720Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=0d37a399d5781911cf9681a102df4ff184a585424483bc4f998ea02281e1758a
+
+ISO IEC 27005-20https://s3.eu-west-3.amazonaws.com/hbtn.intranet/uploads/misc/2025/4/63dc77a5972d105b2eda6ea656289bc83283431f.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MYA5JM5DUTZGMZG%2F20260427%2Feu-west-3%2Fs3%2Faws4_request&X-Amz-Date=20260427T111733Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=bdd5cfeefb730ee5d183c70a65505b6e78ce7b36bab78b617646339d98f08020i
+
+Learning Objectives
+At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
+What is the purpose and scope of an ISMS (Information Security Management System) based on ISO/IEC 27001 and 27002?
+How can you analyze audit findings to identify non-conformities with ISO/IEC 27001 clauses?
+Which specific ISO/IEC 27001 clauses apply to asset management, physical security, and backup procedures?
+What corrective actions can be proposed to resolve non-conformities identified in an internal audit?
+How can additional ISO/IEC 27002 controls strengthen an organization’s security and mitigate residual risks?
+What practical examples demonstrate the effectiveness of ISO/IEC 27002 controls in reducing security vulnerabilities?
+How do you write a structured, professional vulnerability assessment report that adheres to ISO standards and can be presented to management?
+Why is continuous improvement important for maintaining and enhancing an ISMS, and how can it be achieved in practice?
+What best practices should be followed when referencing ISO documentation and anonymizing sensitive information in security reports?
+How do you ensure that a Google Docs report is properly shared and accessible as part of a project submission?
+
+Requirements
+General
+Report-Based: Create a structured vulnerability assessment report aligned with ISO/IEC 27001 and 27002.
+Documentation: Ensure the report is professional, comprehensive, and well-organized.
+Legal and Ethical Considerations: Demonstrate awareness of relevant cybersecurity laws and ethical guidelines.
+Compliance Awareness: Discuss applicable compliance frameworks like GDPR, HIPAA, or PCI-DSS.
+ISO/IEC 27001 Clause Reference: Map non-conformities to specific ISO/IEC 27001 clauses.
+Practical Recommendations: Propose actionable corrective measures and additional ISO/IEC 27002 controls.
+Supporting Evidence: Provide evidence (screenshots, logs) while anonymizing sensitive data.
+Clear Submission Instructions: Create and share the report in Google Docs, set sharing to "Anyone with the link can view."
+Focus on Continuous Improvement: Emphasize the importance of regular audits and ongoing security improvements.
