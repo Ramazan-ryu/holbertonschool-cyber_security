@@ -1,0 +1,35 @@
+Resources
+Read
+NIST Cybersecurity Framework
+https://www.nist.gov/cyberframework
+
+CSF 2.0
+https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf
+
+NIST Special Publication 800-61 Rev. 2
+https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf
+
+NIST National Vulnerability Database
+https://nvd.nist.gov/
+
+
+Learning Objectives
+At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
+
+Understand the Incident Response Lifecycle: Identify and describe the key phases of incident response as outlined in NIST SP 800-61.
+Develop an Effective Response Plan: Create a structured incident response plan that includes containment, eradication, and recovery strategies.
+Assign Roles & Responsibilities: Define key incident response team roles and their responsibilities in mitigating security breaches.
+Analyze and Document Incidents: Conduct a post-incident review and incorporate lessons learned into security policies and training.
+Ensure Continuous Improvement: Implement strategies for refining the incident response process through regular updates and testing.
+
+
+Requirements
+
+General
+Follow NIST SP 800-61: Cover all phases—Preparation, Detection, Containment, Eradication, Recovery, and Post-Incident.
+Clear Structure: Include Introduction, Phases, Roles, Post-Incident Review, Conclusion, and References.
+Defined Roles: Assign Incident Commander, Technical Specialist, and Communications Lead with clear responsibilities.
+Actionable Steps: Provide specific detection, containment, and recovery strategies with best practices.
+Post-Incident Review: Establish learning mechanisms to improve future incident response.
+Submission Format: Use Google Docs, Office 365, or PDF, ensuring clarity and professionalism.
+Anonymization: Remove sensitive information from logs, reports, and examples.

@@ -1,0 +1,59 @@
+0. Developing an Incident Response Plan
+Scenario
+
+Your organization has detected unusual activity indicating a possible security breach involving unauthorized access to sensitive data. As the incident response coordinator, you must develop a comprehensive incident response plan that adheres to the guidelines found in NIST SP 800-61 (Computer Security Incident Handling Guide).
+
+Tasks
+
+Outline the Incident Response Process
+Detail each phase of the incident response lifecycle as recommended by NIST SP 800-61 (e.g., Preparation, Detection & Analysis, Containment, Eradication & Recovery, and Post-Incident Activity).
+
+Define Key Roles and Responsibilities
+Identify the roles within your incident response team (e.g., Incident Commander, Communications Lead, Technical Specialist).
+Clearly delineate who does what during each phase of the response.
+
+Describe Post-Incident Analysis
+Explain how to conduct a thorough review after the incident.
+Provide a plan for incorporating lessons learned into updated policies, procedures, and training.
+
+Report Guidelines
+
+1- Create a professional incident response plan that addresses both immediate containment measures and long-term improvements. Your plan should be structured as follows:
+
+* Provide background on the potential security breach.
+* Include the purpose and scope of your incident response plan.
+
+2- Incident Response Process (Phases)
+
+* Discuss each relevant NIST SP 800-61 phase in detail.
+* Include recommended actions and best practices for each phase.
+
+3- Team Roles and Responsibilities
+
+* Clearly define each team member’s role.
+* Explain how responsibilities will be shared or transferred as needed.
+
+4- Post-Incident Analysis & Lessons Learned
+
+* Outline how you will review and document the incident.
+* Describe how the findings will be used to enhance future incident response strategies.
+
+5- Conclusion
+
+* Summarize the importance of a well-structured, NIST-aligned incident response plan.
+* Highlight the need for regular testing and updates.
+
+6- References
+
+* Cite NIST SP 800-61 and any other relevant resources.
+* Provide links or citations where appropriate.
+
+Submission Instructions
+
+Document Format: Use a preferred collaborative format (e.g., Google Docs, Office 365) for easy sharing.
+
+Share Settings: Ensure the document is set so that “Anyone with the link can view” (or the equivalent).
+
+Submission: Provide the document link in your project submission.
+
+Anonymization: Remove or obfuscate any sensitive information in examples, logs, or screenshots.
