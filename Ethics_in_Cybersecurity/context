@@ -1,0 +1,28 @@
+Resources
+Read or watch:
+Overview of Cybersecurity Ethics
+https://www.augusta.edu/online/blog/cybersecurity-ethics/
+
+Professional Codes of Ethics in IT
+https://www.acm.org/code-of-ethics
+
+
+
+Learning Objectives
+At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
+How do you balance public safety with maintaining a professional relationship with the vendor when handling cybersecurity vulnerabilities?
+Why is transparency and accountability important when informing affected parties and maintaining public trust in cybersecurity incidents?
+How can you apply ethical frameworks (e.g., ACM Code of Ethics, OWASP, NIST guidelines) to ensure professional responsibility during vulnerability disclosure?
+What steps should you take when reporting a vulnerability privately to the vendor, and what kind of technical information should be provided?
+How do you set reasonable deadlines for vendor responses and fixes while preparing for potential public disclosure if the vendor fails to respond?
+Why is it important to document the disclosure process, including communication logs, technical findings, and ethical considerations? How does this support accountability?
+What temporary mitigation measures (e.g., monitoring, network segmentation, access control) can you implement to reduce the risk of exploitation while awaiting vendor response?
+How do you ensure proper coordination by informing the internal security team and management to ensure a cohesive, timely response?
+What should be included in a contingency plan for potential public disclosure if the vendor’s response remains inadequate, and how does it help mitigate further risks?
+
+Requirements
+General
+Report-Based: This project focuses on reporting, with all findings, ethical considerations, and conclusions documented in detail.
+Documentation: Reports must be comprehensive, clear, and well-organized, covering ethical practices, challenges, and recommended improvements.
+Legal and Ethical Considerations: Your reports should reflect awareness of cybersecurity laws, regulations, and ethical guidelines.
+Compliance Awareness: Include a section in your report discussing applicable compliance frameworks (e.g., GDPR, HIPAA, PCI-DSS).
