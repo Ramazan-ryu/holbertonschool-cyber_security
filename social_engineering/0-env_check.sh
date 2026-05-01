@@ -1,11 +1,29 @@
 #!/bin/bash
 
-tools=("setoolkit" "zip" "apache2" "sendmail")
+# setoolkit
+if command -v setoolkit >/dev/null 2>&1 || command -v se-toolkit >/dev/null 2>&1; then
+    echo "OK: setoolkit"
+else
+    echo "MISSING: setoolkit"
+fi
 
-for tool in "${tools[@]}"; do
-    if command -v "$tool" >/dev/null 2>&1; then
-        echo "OK: $tool"
-    else
-        echo "MISSING: $tool"
-    fi
-done
+# zip
+if command -v zip >/dev/null 2>&1; then
+    echo "OK: zip"
+else
+    echo "MISSING: zip"
+fi
+
+# apache2 (special handling)
+if command -v apache2 >/dev/null 2>&1 || command -v apache2ctl >/dev/null 2>&1; then
+    echo "OK: apache2"
+else
+    echo "MISSING: apache2"
+fi
+
+# sendmail
+if command -v sendmail >/dev/null 2>&1; then
+    echo "OK: sendmail"
+else
+    echo "MISSING: sendmail"
+fi
