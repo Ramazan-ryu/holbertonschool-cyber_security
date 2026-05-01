@@ -1,48 +1,80 @@
 #!/usr/bin/env ruby
+
 require 'optparse'
 
-file = 'tasks.txt'
+TASKS_FILE = 'tasks.txt'
 
-# Ensure file exists
-File.write(file, '') unless File.exist?(file)
+def load_tasks
+  return [] unless File.exist?(TASKS_FILE)
+  File.readlines(TASKS_FILE).map(&:chomp)
+end
 
-OptionParser.new do |op|
-  op.banner = 'Usage: cli.rb [options]'
+def save_tasks(tasks)
+  File.write(TASKS_FILE, tasks.join("\n") + (tasks.empty? ? "" : "\n"))
+end
 
-  op.on("-a", "--add TASK", "Add a new task") do |task|
-    array = File.readlines(file, chomp: true).reject(&:empty?)
-    unless array.include?(task)
-      File.open(file, 'a') do |f|
-        f.puts(task)
-      end
-    end
-    puts "Task '#{task}' added."
-  end
+def add_task(task)
+  tasks = load_tasks
+  tasks << task
+  save_tasks(tasks)
+  puts "Task '#{task}' added."
+end
 
-  op.on("-l", "--list", "List all tasks") do
-    array = File.readlines(file, chomp: true).reject(&:empty?)
+def list_tasks
+  tasks = load_tasks
+  if tasks.empty?
+    puts "No tasks found."
+  else
     puts "Tasks:"
-    puts ""
-    array.each_with_index do |task, i|
-      puts "#{i + 1}. #{task}"
+    tasks.each_with_index do |task, index|
+      puts "  #{index + 1}. #{task}"
     end
   end
+end
 
-  op.on("-r", "--remove INDEX", Integer, "Remove a task by index") do |index|
-    array = File.readlines(file, chomp: true).reject(&:empty?)
-    if index < 1 || index > array.length
-      puts "Invalid task index."
-      exit 1
-    end
-    removed = array.delete_at(index - 1)
-    File.open(file, 'w') do |f|
-      array.each { |task| f.puts(task) }
-    end
+def remove_task(index)
+  tasks = load_tasks
+  idx = index.to_i - 1
+  if idx < 0 || idx >= tasks.length
+    puts "Invalid index."
+  else
+    removed = tasks.delete_at(idx)
+    save_tasks(tasks)
     puts "Task '#{removed}' removed."
   end
+end
 
-  op.on("-h", "--help", "Show help") do
-    puts op
+options = {}
+
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: cli.rb [options]"
+
+  opts.on("-a", "--add TASK", "Add a new task") do |task|
+    options[:add] = task
+  end
+
+  opts.on("-l", "--list", "List all tasks") do
+    options[:list] = true
+  end
+
+  opts.on("-r", "--remove INDEX", "Remove a task by index") do |index|
+    options[:remove] = index
+  end
+
+  opts.on("-h", "--help", "Show help") do
+    puts opts
     exit
   end
-end.parse!
+end
+
+parser.parse!
+
+if options[:add]
+  add_task(options[:add])
+elsif options[:list]
+  list_tasks
+elsif options[:remove]
+  remove_task(options[:remove])
+else
+  puts parser
+end
