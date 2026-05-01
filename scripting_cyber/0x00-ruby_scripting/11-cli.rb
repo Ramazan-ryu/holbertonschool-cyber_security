@@ -13,12 +13,17 @@ end
 
 def list_tasks
   tasks = File.readlines(TASKS_FILE).map(&:strip)
+  puts tasks
   if tasks.empty?
     puts 'No tasks available.'
   else
     puts 'Tasks:' # Encabezado requerido
-    tasks.each_with_index do |task, index|
-      puts "#{index + 1}. #{task}"
+    index = 1
+    tasks.each do |task|
+      unless task.empty?
+        puts "#{index}. #{task}"
+        index += 1
+      end
     end
   end
 end
