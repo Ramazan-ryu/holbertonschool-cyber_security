@@ -4,12 +4,21 @@ TASKS_FILE = 'tasks.txt'
 
 File.write(TASKS_FILE, '', mode: 'a') unless File.exist?(TASKS_FILE)
 
+#def add_task(task)
+#  File.open(TASKS_FILE, 'a') do |file|
+#    file.puts(task)
+#  end
+#  puts "Task '#{task}' added."
+#end
+
 def add_task(task)
-  File.open(TASKS_FILE, 'a') do |file|
-    file.puts(task)
+  tasks = File.readlines(TASKS_FILE).map(&:strip).reject(&:empty?)
+  unless tasks.include?(task)
+    File.open(TASKS_FILE, 'a') { |f| f.puts(task) }
   end
   puts "Task '#{task}' added."
 end
+
 
 def list_tasks
   tasks = File.readlines(TASKS_FILE).map(&:strip)
@@ -20,7 +29,7 @@ def list_tasks
     index = 1
     tasks.each do |task|
       unless task.empty?
-        puts "#{index}. #{task}"
+        puts "  #{index}. #{task}"
         index += 1
       end
     end
