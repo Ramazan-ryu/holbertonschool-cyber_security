@@ -13,7 +13,6 @@ end
 
 def list_tasks
   tasks = File.readlines(TASKS_FILE).map(&:strip)
-  puts tasks
   if tasks.empty?
     puts 'No tasks available.'
   else
