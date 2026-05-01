@@ -19,7 +19,6 @@ OptionParser.new do |op|
   op.on("-l", "--list", "List all tasks") do
     array = File.readlines(file, chomp: true).reject(&:empty?)
     puts "Tasks:"
-    puts ""
     array.each_with_index do |task, i|
       puts "#{i + 1}. #{task}"
     end
