@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-
 require 'optparse'
 
 file = 'tasks.txt'
@@ -18,28 +17,24 @@ OptionParser.new do |op|
   end
 
   op.on("-l", "--list", "List all tasks") do
-    array = File.readlines(file, chomp: true)
-    
-    if index<1 || index> array.lenght
-      puts "Invalid task index."
-      exit 1
+    array = File.readlines(file, chomp: true).reject(&:empty?)
+    puts "Tasks:"
+    puts ""
+    array.each_with_index do |task, i|
+      puts "#{i + 1}. #{task}"
     end
   end
 
   op.on("-r", "--remove INDEX", Integer, "Remove a task by index") do |index|
     array = File.readlines(file, chomp: true).reject(&:empty?)
-
     if index < 1 || index > array.length
       puts "Invalid task index."
       exit 1
     end
-
     removed = array.delete_at(index - 1)
-
     File.open(file, 'w') do |f|
       array.each { |task| f.puts(task) }
     end
-
     puts "Task '#{removed}' removed."
   end
 
@@ -47,5 +42,4 @@ OptionParser.new do |op|
     puts op
     exit
   end
-
 end.parse!
