@@ -19,13 +19,15 @@ OptionParser.new do |op|
 
   op.on("-l", "--list", "List all tasks") do
     array = File.readlines(file, chomp: true)
-    array.each_with_index do |task, i|
-      puts "#{i + 1}. #{task}"
+    
+    if index<1 || index> array.lenght
+      puts "Invalid task index."
+      exit 1
     end
   end
 
   op.on("-r", "--remove INDEX", Integer, "Remove a task by index") do |index|
-    array = File.readlines(file, chomp: true)
+    array = File.readlines(file, chomp: true).reject(&:empty?)
 
     if index < 1 || index > array.length
       puts "Invalid task index."
