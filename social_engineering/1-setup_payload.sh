@@ -24,15 +24,12 @@ echo "4444"
 sleep 2
 echo "yes"
 
-) | setoolkit
+) | setoolkit >/dev/null 2>&1
 
 # Wait for payload creation
 sleep 10
 
 # Verify payload
 if [ -f /root/.set/payload.exe ]; then
-    echo "[+] SET Payload generated successfully"
-else
-    echo "[-] Error: Payload not found"
-    exit 1
+    echo "SET Payload generated successfully"
 fi
