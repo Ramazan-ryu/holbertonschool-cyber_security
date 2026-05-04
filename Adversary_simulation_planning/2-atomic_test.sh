@@ -21,7 +21,7 @@ fi
 
 START_TIME=$(timestamp)
 
-echo "MITRE ATT&CK Techniqe: $TECH_ID - $TECH_NAME"
+echo "MITRE ATT&CK Technique: $TECH_ID - $TECH_NAME"
 echo "Start time: $START_TIME"
 echo "Running simulation..."
 
