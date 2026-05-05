@@ -1,2 +1,2 @@
 #!/bin/bash
-powershell -Command "Write-Output 'Hello, Holberton'"
+pwsh -Command "Write-Output 'Hello, Holberton'"
