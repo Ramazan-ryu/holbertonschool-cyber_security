@@ -1,64 +1,85 @@
 #!/usr/bin/env ruby
+
 require 'optparse'
-TASKS_FILE = 'tasks.txt'
-def load_tasks
-  return [] unless File.exist?(TASKS_FILE)
-  File.readlines(TASKS_FILE, chomp: true)
-end
-def save_tasks(tasks)
-  File.write(TASKS_FILE, tasks.join("\n") + (tasks.empty? ? "" : "\n"))
-end
-def add_task(task)
-  tasks = load_tasks
-  tasks << task
-  save_tasks(tasks)
-  puts "Task '#{task}' added."
-end
-def list_tasks
-  tasks = load_tasks
-  if tasks.empty?
-    puts "No tasks found."
-  else
-    puts "Tasks:"
-    tasks.each_with_index { |task, i| puts "#{i + 1}. #{task}" }
+
+# Define TaskManager class to manage tasks
+class TaskManager
+  attr_reader :tasks
+
+  def initialize
+    @tasks = load_tasks
+  end
+
+  def add_task(task)
+    @tasks << task
+    save_tasks
+    puts "Task '#{task}' added."
+  end
+
+  def list_tasks
+    if @tasks.empty?
+      puts "No tasks."
+    else
+      puts "Tasks:"
+      @tasks.each_with_index do |task, index|
+        puts "#{index + 1}. #{task}"
+      end
+    end
+  end
+
+  def remove_task(index)
+    if index >= 1 && index <= @tasks.length
+      task = @tasks.delete_at(index - 1)
+      save_tasks
+      puts "Task '#{task}' removed."
+    else
+      puts "Invalid task index."
+    end
+  end
+
+  private
+
+  def load_tasks
+    if File.exist?('tasks.txt')
+      File.readlines('tasks.txt').map(&:chomp)
+    else
+      []
+    end
+  end
+
+  def save_tasks
+    File.open('tasks.txt', 'w') do |file|
+      @tasks.each { |task| file.puts task }
+    end
   end
 end
-def remove_task(index)
-  tasks = load_tasks
-  i = index.to_i - 1
-  if i < 0 || i >= tasks.length
-    puts "Invalid index."
-    exit 1
+
+# Initialize TaskManager
+task_manager = TaskManager.new
+
+# Option parser for CLI commands
+OptionParser.new do |parser|
+  parser.banner = "Usage: #{File.basename($PROGRAM_NAME)} [options]"
+
+  parser.on("-aTASK", "--add TASK", "Add a new task") do |task|
+    task_manager.add_task(task)
   end
-  removed = tasks.delete_at(i)
-  save_tasks(tasks)
-  puts "Task '#{removed}' removed."
-end
-options = {}
-parser = OptionParser.new do |opts|
-  opts.banner = "Usage: cli.rb [options]"
-  opts.on("-a", "--add TASK", "Add a new task") do |task|
-    options[:action] = :add
-    options[:task] = task
+
+  parser.on("-l", "--list", "List all tasks") do
+    task_manager.list_tasks
   end
-  opts.on("-l", "--list", "List all tasks") do
-    options[:action] = :list
+
+  parser.on("-rINDEX", "--remove INDEX", Integer, "Remove a task by index") do |index|
+    task_manager.remove_task(index)
   end
-  opts.on("-r", "--remove INDEX", "Remove a task by index") do |index|
-    options[:action] = :remove
-    options[:index] = index
-  end
-  opts.on("-h", "--help", "Show help") do
-    puts opts
+
+  parser.on("-h", "--help", "Show help") do
+    puts parser
     exit
   end
-end
-parser.parse!
-case options[:action]
-when :add    then add_task(options[:task])
-when :list   then list_tasks
-when :remove then remove_task(options[:index])
-else
-  puts parser
-  exit 1
+end.parse!
+
+# Print help message if no arguments are provided
+if ARGV.empty?
+  puts OptionParser.new.help
 end
