@@ -1,0 +1,293 @@
+# TASK 0 - Harden the Teamserver
+
+---
+
+## Step T1 - SSH Lockdown 
+
+**VMs:** VM1 (Kali) - SSH key pair, `ssh-copy-id`, tests. VM2 (Ubuntu) — `sshd` hardening, restart **`ssh`** (Ubuntu/Debian unit name; not `sshd`).
+
+
+### Solution
+
+**Run on - VM1 (Kali):**
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/id_ctf -N ""
+ssh-copy-id -i ~/.ssh/id_ctf.pub user@192.168.56.20
+```
+/home/kali/.ssh/
+
+**Run on - VM2 (Ubuntu):**
+```bash
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+
+sudo tee /etc/ssh/sshd_config.d/ctf-hardening.conf << 'EOF'
+PasswordAuthentication no
+PubkeyAuthentication yes
+PermitRootLogin no
+AllowUsers user@192.168.56.10 sliver-op@192.168.56.10
+MaxAuthTries 3
+EOF
+
+sudo systemctl restart ssh
+```
+**Run on - VM1 (Kali):**
+```bash
+# From Kali (should work)
+ssh -i ~/.ssh/id_ctf user@192.168.56.20
+
+# Password attempt (should fail)
+ssh -o PubkeyAuthentication=no user@192.168.56.20
+```
+### Expected output (reference)
+
+**Key login (Kali → Ubuntu):** shell prompt becomes `user@ubuntu-server:~$` (or similar) with no password prompt when `-i ~/.ssh/id_ctf` is used.
+
+
+
+
+### Common Mistakes
+- Forgetting to copy the SSH key before disabling password auth (locks yourself out)
+- Not restarting sshd after config change
+- Using `AllowUsers user` without specifying IP (allows from anywhere)
+
+### Blue Team Angle
+A defender would monitor for:
+- Changes to `sshd_config` (file integrity monitoring / AIDE)
+- SSH key additions in `~/.ssh/authorized_keys`
+- Failed SSH login attempts in `/var/log/auth.log`
+
+
+
+## Step T2 — Firewall (50 pts)
+
+**VMs:** VM2 (Ubuntu) — UFW rules. VM1 (Kali) — `nmap` / connectivity tests.
+
+### Solution
+
+**Run on — VM2 (Ubuntu):**
+```bash
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow from 192.168.56.10 to any port 22 proto tcp
+sudo ufw allow 443/tcp
+# Sliver multiplayer: default build uses WireGuard on UDP/31337 (TCP alone → client "context deadline exceeded")
+sudo ufw allow from 192.168.56.10 to any port 31337 proto tcp
+sudo ufw allow from 192.168.56.10 to any port 31337 proto udp
+sudo ufw  enable
+sudo ufw status verbose
+```
+### Expected output (ufw — `ufw status verbose`)
+
+
+
+**Run on — VM1 (Kali):**
+
+nmap -p 22,80,443,8080,31337 192.168.56.20
+
+
+UFW blocks 443/31337, often “allowed but nothing listening”; filtered ≈ “not allowed / drop for these ports.
+
+
+
+
+### Common Mistakes
+- Opening port 31337 to all IPs (should be Kali only)
+- Forgetting `--force` on enable (gets stuck at prompt)
+- Not setting default deny before adding allow rules
+### Blue Team Angle
+- Defenders run `ufw status` during incident response
+- Firewall rules reveal what services the operator intended to expose
+- Port 31337 being open is a Sliver multiplayer indicator
+
+## Step T3 — No Root Allowed (100 pts)
+
+
+**VMs:** VM2 (Ubuntu) — `sliver-op` user, systemd unit, `setcap`, Sliver as non-root.
+
+
+### Solution
+
+
+**Run on — VM2 (Ubuntu):**
+```bash
+# Create user
+sudo useradd -r -m -d /home/sliver-op -s /bin/bash sliver-op
+
+
+# Create Sliver directories
+sudo mkdir -p /home/sliver-op/.sliver
+sudo mkdir -p /home/sliver-op/.sliver/configs
+sudo chown -R sliver-op:sliver-op /home/sliver-op/
+
+
+# Copy Sliver binary if needed
+sudo cp /usr/local/bin/sliver-server /home/sliver-op/sliver-server
+sudo chown sliver-op:sliver-op /home/sliver-op/sliver-server
+
+
+# Grant capability to bind low ports without root
+sudo setcap 'cap_net_bind_service=+ep' /home/sliver-op/sliver-server
+
+
+# Create systemd service
+sudo tee /etc/systemd/system/sliver.service << 'EOF'
+[Unit]
+Description=Sliver C2 Server
+After=network.target
+
+
+[Service]
+Type=simple
+User=sliver-op
+Group=sliver-op
+WorkingDirectory=/home/sliver-op
+ExecStart=/home/sliver-op/sliver-server daemon
+Restart=on-failure
+RestartSec=10
+
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable sliver
+sudo systemctl start sliver
+```
+
+**Run on — VM2 (Ubuntu):**
+ps aux | grep sliver
+# Should show sliver-op, NOT root
+
+
+
+systemctl status sliver
+# Should show active (running)
+```
+
+
+### Regenerate the operator `.cfg` for Kali
+
+sudo -u sliver-op HOME=/home/sliver-op /home/sliver-op/sliver-server operator \
+  --name student --lhost 192.168.56.20 --lport 31337 --permissions all --save /tmp/op.cfg
+
+sudo cp /tmp/op.cfg /home/user/op.cfg && sudo chown user:user /home/user/op.cfg && sudo chmod 600 /home/user/op.cfg
+
+
+ kali
+
+scp -i ~/.ssh/id_ctf user@192.168.56.20:/home/user/op.cfg ~/op.cfg 
+
+
+sliver-client import ~/op.cfg
+sliver-client
+
+
+
+### Common Mistakes
+- Wrong permissions on `.sliver/` directory
+- Service file has wrong `WorkingDirectory`
+
+
+### Blue Team Angle
+- `ps aux` showing a non-standard user running a network service is suspicious
+- The `setcap` on a binary is detectable: `getcap /home/sliver-op/sliver-server`
+- Systemd service files in `/etc/systemd/system/` are persistence indicators
+
+
+---
+
+
+## Step T4- TLS Certificate Chain (100 pts)
+
+
+**VMs:** VM2 (Ubuntu) - OpenSSL, cert files under `/home/sliver-op/certs`, Sliver `https` listener. VM1 (Kali) - optional `scp` of CA, `curl` test.
+
+
+### Solution
+
+
+**Run on - VM2 (Ubuntu)** (interactive shell becomes `sliver-op` after `sudo -iu sliver-op`):
+
+
+```bash
+# Create cert directory
+sudo -iu sliver-op
+mkdir -p ~/certs
+cd ~/certs
+# Generate CA
+openssl genrsa -out ca.key 4096
+openssl req -new -x509 -days 365 -key ca.key \
+    -out ca.crt \
+    -subj "/C=US/ST=Washington/L=Redmond/O=Microsoft Corporation/OU=Microsoft Update/CN=Microsoft Root CA"
+
+
+# Generate server key and CSR
+openssl genrsa -out server.key 2048
+openssl req -new -key server.key \
+    -out server.csr \
+    -subj "/C=US/ST=Washington/L=Redmond/O=Microsoft Corporation/CN=update-microsoft.com"
+
+
+# Create extensions file for SAN
+cat > server_ext.cnf << 'EOF'
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage=digitalSignature,keyEncipherment
+subjectAltName=@alt_names
+
+
+[alt_names]
+DNS.1=update-microsoft.com
+DNS.2=*.update-microsoft.com
+DNS.3=api.office365-verify.com
+EOF
+
+
+# Sign with CA
+openssl x509 -req -in server.csr \
+    -CA ca.crt -CAkey ca.key -CAcreateserial \
+    -out server.crt -days 365 \
+    -extfile server_ext.cnf
+
+
+# Verify chain
+openssl verify -CAfile ca.crt server.crt
+
+
+# Set permissions
+chown sliver-op:sliver-op *.key *.crt *.csr
+chmod 600 *.key
+```
+
+sudo mkdir -p /tmp/cert_export
+sudo cp /home/sliver-op/certs/server.crt /tmp/cert_export/
+sudo cp /home/sliver-op/certs/ca.crt /tmp/cert_export/
+sudo cp /home/sliver-op/certs/server.key /tmp/cert_export/
+sudo chown -R user:user /tmp/cert_export
+sudo chmod 644 /tmp/cert_export/*
+
+
+
+
+
+
+**Run on — VM1 (Kali):**
+scp -i ~/.ssh/id_ctf user@192.168.56.20:/tmp/cert_export/server.crt ~/certs/     
+scp -i ~/.ssh/id_ctf user@192.168.56.20:/tmp/cert_export/ca.crt ~/certs/
+scp -i ~/.ssh/id_ctf user@192.168.56.20:/tmp/cert_export/server.key ~/certs/
+
+
+
+
+
+**Run on — VM1 (Kali)** — Sliver **client** console (connected to teamserver on VM2):
+https --lhost 192.168.56.20 --lport 443 --cert /home/kali/certs/server.crt --key /home/kali/certs/server.key
+
+
+
+
+# Test
+curl --cacert ~/certs/ca.crt https://update-microsoft.com:443 -v
+
