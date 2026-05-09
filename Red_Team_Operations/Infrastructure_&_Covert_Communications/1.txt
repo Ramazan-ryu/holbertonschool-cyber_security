@@ -1,0 +1,407 @@
+
+# TASK 1 — Build the Redirector Chain
+
+
+---
+
+
+## Step R1 — Nginx Proxy Pass (50 pts)
+
+
+**VMs:** VM2 (Ubuntu) — nginx site, cover page. Tests: VM1 (Kali) or any client hitting `192.168.56.20`.
+
+
+### Solution
+
+
+**Run on — VM2 (Ubuntu):**
+```bash
+# Nginx is pre-installed — create cover page
+sudo tee /var/www/html/index.html << 'EOF'
+<!DOCTYPE html>
+<html><head><title>Microsoft Update Service</title></head>
+<body><h1>Service Status: OK</h1><p>Windows Update Service is running normally.</p></body>
+</html>
+EOF
+
+
+# Create redirector config
+sudo tee /etc/nginx/sites-available/c2-redirector << 'EOF'
+server {
+    listen 80;
+    server_name update-microsoft.com 127.0.0.1 localhost;
+
+
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+
+
+    location /beacon {
+        proxy_pass http://127.0.0.1:8443;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+EOF
+
+
+sudo ln -sf /etc/nginx/sites-available/c2-redirector /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo systemctl start nginx
+sudo systemctl enable nginx
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+
+**Run on — VM1 (Kali)** (or any client that can reach VM2):
+
+
+```bash
+curl http://192.168.56.20/          # Returns cover page
+curl http://192.168.56.20/beacon    # Proxied to Sliver
+
+
+
+
+## Step R2 — Agent Filter (100 pts)
+
+
+**VMs:** VM2 (Ubuntu) — nginx `map` / User-Agent filtering. VM1 (Kali) — `curl`/`wget` tests.
+
+
+### Solution
+
+
+**Run on — VM2 (Ubuntu):**
+```bash
+sudo nano /etc/nginx/sites-available/c2-redirector
+
+
+```
+
+
+```nginx
+# Add to the server block in c2-redirector config
+
+
+# Block suspicious User-Agents:
+'''
+```
+map $http_user_agent $blocked_agent {
+    default 0;
+    ~*curl 1;
+    ~*wget 1;
+    ~*python 1;
+    ~*scanner 1;
+    ~*nikto 1;
+    ~*sqlmap 1;
+    ~*nmap 1;
+    ~*masscan 1;
+    ~*gobuster 1;
+    ~*dirbuster 1;
+    "" 1;
+}
+
+server {
+    listen 80;
+    server_name update-microsoft.com 127.0.0.1 localhost;
+
+    # Keep R1 cover path functional (do not block here)
+    location / {
+        root /var/www/html;
+        index index.html;
+        try_files $uri $uri/ =200;
+    }
+
+    # Apply R2 filter on beacon path
+    location /beacon {
+        if ($blocked_agent) {
+            return 403;
+        }
+        proxy_pass http://127.0.0.1:8443;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+sudo nginx -t && sudo systemctl reload nginx
+
+
+
+
+**Run on — VM1 (Kali):**
+
+sliver-client : http --lhost 127.0.0.1 --lport 8443
+sur un autre terminal kali 
+
+```bash
+curl http://192.168.56.20/beacon                              # 403 Blocked
+curl -A "Mozilla/5.0 (Windows NT 10.0)" http://192.168.56.20/beacon  # Passes
+wget http://192.168.56.20/beacon  
+
+
+
+
+
+after R2 you must kill jobs 
+
+jobs -k 1 : 1 is job id 
+
+## Step R3 — Chain Reaction
+
+**VMs:** VM2 (Ubuntu) — **socat** on **:443**, **nginx** on **:8443**, **Sliver** on **127.0.0.1:9443** 
+. VM1 (Kali) — `curl` to **`https://192.168.56.20:443/…`** (through **socat** into **nginx**).
+
+### Solution — commands only 
+
+Target path: **Kali** → **`192.168.56.20:443` (socat TCP relay)** → **`127.0.0.1:8443` (nginx)** → **`127.0.0.1:9443` (Sliver HTTP)**.
+
+**0 — VM1 (Kali), Sliver client** — free stray listeners on VM2 if needed:
+
+```
+jobs
+jobs -k <id>   # not `kill <id>` — use `jobs -k` in Sliver
+```
+
+**1 — VM1 (Kali), Sliver client** — internal C2 (**HTTP** on loopback **9443**):
+
+```
+http -L 127.0.0.1 -l 9443
+```
+
+**2 — VM2 (Ubuntu), shell** — **nginx** on **8443** terminates TLS (example), forwards **HTTP** to **Sliver** (adjust cert paths):
+
+```bash
+sudo bash -c 'cat > /etc/nginx/sites-available/c2-redirector << EOF 
+map $http_user_agent $blocked_agent {
+    default 0;
+    ~*curl 1;
+    ~*wget 1;
+    ~*python 1;
+    ~*scanner 1;
+    ~*nikto 1;
+    ~*sqlmap 1;
+    ~*nmap 1;
+}
+
+# R1/R2 - public port 80
+server {
+    listen 80;
+    server_name update-microsoft.com 127.0.0.1 localhost;
+
+    # R2 enforcement only on beacon path
+    location /beacon {
+        if ($blocked_agent) {
+            return 403;
+        }
+        proxy_pass http://127.0.0.1:8443;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    # R1 cover path (do NOT block UA here)
+    location / {
+        root /var/www/html;
+        index index.html;
+        try_files $uri $uri/ =200;
+    }
+}
+
+# R3 chain port 8443 -> 9443
+server {
+    listen 8443;
+    server_name update-microsoft.com 127.0.0.1 localhost;
+
+    location /beacon {
+        if ($blocked_agent) {
+            return 403;
+        }
+        proxy_pass http://127.0.0.1:9443;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location / {
+        root /var/www/html;
+        index index.html;
+        try_files $uri $uri/ =200;
+    }
+}
+EOF
+sudo nginx -t && sudo systemctl reload nginx 
+
+```
+
+**3 — VM2 (Ubuntu), shell** — **socat** edge relay **443 → 127.0.0.1:8443** (start **after** nginx listens on **8443**):
+
+```bash
+sudo socat TCP-LISTEN:443,fork,reuseaddr TCP:127.0.0.1:8443 &
+```
+
+**4 — VM1 (Kali), shell** — test:
+
+```bash
+curl -k https://192.168.56.20:443/beacon
+```
+
+**5 — VM2 (Ubuntu), shell** — evidence:
+
+```bash
+sudo ss -tlnp | grep -E '443|8443|9443'
+sudo tail -n 20 /var/log/nginx/access.log
+``
+
+
+### Pitfalls
+
+- **Only one process on 443:** here it must be **socat** — disable or avoid any **nginx** `listen 443` left over from experiments before starting the relay.
+- **Duplicate `sites-enabled` names** (`c2-redirector` vs `c2-edge`) can keep a stray **`listen 80`** / **`listen 443`** and break routing.
+- **502 on `/beacon`:** scheme mismatch — **`proxy_pass http://127.0.0.1:9443`** requires Sliver **`http`** on **9443**.
+
+### Expected output (reference)
+
+**`sudo ss -tlnp | grep -E '443|8443|9443'` (illustrative):**
+```text
+LISTEN ... 0.0.0.0:443 ... users:(("socat",pid=...,fd=...))
+LISTEN ... 127.0.0.1:8443 ... users:(("nginx",pid=...,fd=...))
+LISTEN ... 127.0.0.1:9443 ... users:(("sliver-server",pid=...,fd=...))
+```
+
+### Blue Team Angle
+- Multiple hops on loopback still show up in **`ss`**
+- **socat** as a long-lived relay is a common indicator
+- Edge TLS does not hide the inner HTTP hop from host-based inspection
+
+
+## Step R4 — Burn Notice (150 pts)
+
+
+**VMs:** VM2 (Ubuntu) — `/opt/burn-notice`, nginx configs, monitor/reset scripts. VM1 (Kali) — optional `curl` loop to trigger burn.
+
+
+### Solution
+
+
+**Run on — VM2 (Ubuntu):**
+```bash
+# Create directory structure
+sudo mkdir -p /opt/burn-notice
+
+
+# Normal config (already exists)
+sudo cp /etc/nginx/sites-available/c2-redirector /opt/burn-notice/normal.conf
+
+
+# Burned config
+sudo tee /opt/burn-notice/burned.conf << 'EOF'
+server {
+    listen 80;
+    server_name _;
+    return 301 https://www.microsoft.com$request_uri;
+}
+EOF
+
+
+# Monitor script
+sudo tee /opt/burn-notice/monitor.sh << 'SCRIPT'
+#!/bin/bash
+THRESHOLD=10
+WINDOW=300  # 5 minutes in seconds
+LOG="/var/log/nginx/access.log"
+BURN_LOG="/opt/burn-notice/burn.log"
+STATE_FILE="/opt/burn-notice/state"
+
+
+echo "normal" > "$STATE_FILE"
+
+
+while true; do
+    CURRENT_STATE=$(cat "$STATE_FILE")
+    if [ "$CURRENT_STATE" = "burned" ]; then
+        sleep 30
+        continue
+    fi
+
+
+    SUSPICIOUS=$(tail -n 1000 "$LOG" 2>/dev/null | \
+        awk -v window=$WINDOW -v now=$(date +%s) '
+        {
+            if ($9 == "403") count++
+        }
+        END { print count+0 }')
+
+
+    if [ "$SUSPICIOUS" -ge "$THRESHOLD" ]; then
+        echo "[$(date)] BURN TRIGGERED — $SUSPICIOUS suspicious requests" >> "$BURN_LOG"
+        sudo cp /opt/burn-notice/burned.conf /etc/nginx/sites-available/c2-redirector
+        sudo nginx -t && sudo systemctl reload nginx
+        echo "burned" > "$STATE_FILE"
+        echo "[$(date)] Switched to BURNED mode" >> "$BURN_LOG"
+    fi
+
+
+    sleep 10
+done
+SCRIPT
+
+
+# Reset script
+sudo tee /opt/burn-notice/reset.sh << 'SCRIPT'
+#!/bin/bash
+sudo cp /opt/burn-notice/normal.conf /etc/nginx/sites-available/c2-redirector
+sudo nginx -t && sudo systemctl reload nginx
+echo "normal" > /opt/burn-notice/state
+echo "[$(date)] RESET to normal mode" >> /opt/burn-notice/burn.log
+SCRIPT
+
+
+sudo chmod +x /opt/burn-notice/monitor.sh /opt/burn-notice/reset.sh
+```
+
+
+**Run on — VM2 (Ubuntu)** (SSH session on teamserver; `curl` loop hits local nginx — may also be run from **VM1** toward `192.168.56.20`):
+
+
+```bash
+# Start monitor in background
+
+sudo /opt/burn-notice/monitor.sh &
+
+
+# Trigger burn (send 11 suspicious requests)
+for i in $(seq 1 11); do curl http://192.168.56.20/beacon 2>/dev/null; done
+
+
+# Wait 15 seconds, then verify
+sleep 15
+curl -L http://192.168.56.20/  # Should redirect to microsoft.com
+
+
+# Check log
+cat /opt/burn-notice/burn.log
+
+
+# Reset
+sudo /opt/burn-notice/reset.sh
+```
+
+
+
+
+**`curl -IL http://192.168.56.20/` (after burn):**
+
+```
+(Final URL in browser/`curl -L` is `www.microsoft.com`.)
+
+
+**`cat /opt/burn-notice/state`:**
+
+(after burn) or `normal` after `reset.sh
