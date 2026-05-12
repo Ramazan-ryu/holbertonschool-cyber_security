@@ -10,7 +10,7 @@ Answer find method flag 1 txt
 
 
 
-flag 2 txt
+flag 2 txt and flag 3 txt
 
 
 └─$ hashcat -m 18200 asrep.txt /usr/share/wordlists/rockyou.txt --force 
