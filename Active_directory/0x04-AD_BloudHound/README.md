@@ -26,3 +26,15 @@ ldapsearch -x \
 "(sAMAccountName=bh_intern)"
 
 
+
+
+
+TASK 1
+
+└─$ ldapsearch -x \
+-H ldap://192.168.56.20 \
+-D "bh_intern@pentestlab.local" \
+-w 'User@2025!' \
+-b "dc=pentestlab,dc=local" \
+"(objectClass=user)" description info telephoneNumber | grep FLAG
+
